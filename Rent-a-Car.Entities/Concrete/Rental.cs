@@ -1,18 +1,27 @@
-﻿using System;
+﻿using Rent_a_Car.Core.Entities;
+using Rent_a_Car.Entities.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Rent_a_Car.Entities.Concrete
 {
-    public class Rental
+    public class Rental : IEntity
     {
         public int Id { get; set; }
-        public int PersonId { get; set; }
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public int CarId { get; set; }
+        public Car Car { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int KMDelivery { get; set; }
         public int KMCurrent { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
+        public int EmployeeId { get; set; }
+        public Employee Employee { get; set; }
+        public DateTime ApprovalDate { get; set; }
     }
 }

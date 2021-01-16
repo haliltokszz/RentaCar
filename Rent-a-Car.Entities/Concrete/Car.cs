@@ -14,7 +14,6 @@ namespace Rent_a_Car.Entities.Concrete
         public byte LimitMinAge { get; set; }
         public int KMLimitDaily { get; set; }
         public int KMCurrent { get; set; }
-        public bool hasAirbag { get; set; }
         public int TrunkCapacity { get; set; }
         public byte SeatsNumber { get; set; }
         public decimal DailyPrice { get; set; }

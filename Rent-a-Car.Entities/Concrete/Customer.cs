@@ -7,5 +7,6 @@ namespace Rent_a_Car.Entities.Concrete
 {
     public class Customer : Person
     {
+        public int CustomerId{ get; set; }
     }
 }

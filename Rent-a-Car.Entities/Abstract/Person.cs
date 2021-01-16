@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Rent_a_Car.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Rent_a_Car.Entities.Abstract
 {
-    public abstract class Person
+    public abstract class Person:IEntity
     {
         public int Id { get; set; }
         public string TCno { get; set; }
