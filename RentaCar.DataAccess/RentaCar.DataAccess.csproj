@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RentaCar.Core\RentaCar.Core.csproj" />
+    <ProjectReference Include="..\RentaCar.Entities\RentaCar.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
