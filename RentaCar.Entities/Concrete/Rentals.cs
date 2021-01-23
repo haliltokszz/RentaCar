@@ -6,22 +6,23 @@ using System.Text;
 
 namespace RentaCar.Entities.Concrete
 {
-    public class Rental : IEntity
+    public class Rentals : IEntity
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public Customers Customer { get; set; }
         public int CarId { get; set; }
-        public Car Car { get; set; }
+        public Cars Car { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int KMDelivery { get; set; }
         public int KMCurrent { get; set; }
         public decimal Price { get; set; }
         public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public Companies Company { get; set; }
         public int EmployeeId { get; set; }
-        public Employee Employee { get; set; }
+        public Employees Employee { get; set; }
         public DateTime ApprovalDate { get; set; }
+        
     }
 }

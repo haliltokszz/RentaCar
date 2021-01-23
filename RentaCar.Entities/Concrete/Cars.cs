@@ -5,9 +5,11 @@ using System.Text;
 
 namespace RentaCar.Entities.Concrete
 {
-    public class Car:IEntity
+    public class Cars:IEntity
     {
         public int Id { get; set; }
+        public int CompanyId { get; set; }
+        public Companies Company { get; set; }
         public string Name { get; set; }
         public string Model { get; set; }
         public byte RequiredDriveExperience { get; set; }
