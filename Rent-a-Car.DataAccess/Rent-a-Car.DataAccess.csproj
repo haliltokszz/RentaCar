@@ -1,8 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Rent_a_Car.DataAccess</RootNamespace>
-  </PropertyGroup>
-
-</Project>
