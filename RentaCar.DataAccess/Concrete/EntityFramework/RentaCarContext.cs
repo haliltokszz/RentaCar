@@ -12,15 +12,25 @@ namespace RentaCar.DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\SQLEXPRESS; Database=RentaCar-NTier; Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=MONSTER-HALIL\SQLEXPRESS; Database=RentaCar-NTier; Trusted_Connection=True;");
         }
-        public DbSet<Person> People { get; set; }
-        public DbSet<IUser> Users { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<Rental> Rentals { get; set; }
+        public DbSet<Users> Users { get; set; }
+        //public DbSet<Customers> Customers { get; set; }
+        //public DbSet<Employees> Employees { get; set; }
+        public DbSet<Companies> Companies { get; set; }
+        public DbSet<Cars> Cars { get; set; }
+        public DbSet<Rentals> Rentals { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Customers>().ToTable("Customers");
+            builder.Entity<Customers>().HasBaseType("RentaCar.Entities.Abstract.Users");
+            //builder.Entity<Customers>().HasKey(c => c.Id);
+
+            builder.Entity<Employees>().ToTable("Employees");
+
+            builder.Entity<Users>().HasKey(u => u.Id);
+        }
 
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RentaCar.DataAccess.Abstract
 {
-    public interface IPersonDal : IEntityRepository<Person>
+    public interface IUserDal : IEntityRepository<Users>
     {
     }
 }

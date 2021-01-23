@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RentaCar.DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, RentaCarContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Cars, RentaCarContext>, ICarDal
     {
     }
 }
