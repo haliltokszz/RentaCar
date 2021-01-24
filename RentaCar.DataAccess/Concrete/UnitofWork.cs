@@ -15,9 +15,9 @@ namespace RentaCar.DataAccess.Concrete
         private EfCustomerDal _efCustomerDal;
         private EfEmployeeDal _efEmployeeDal;
         private EfRentalDal _efRentalDal;
-        public UnitofWork(RentaCarContext context)
+        public UnitofWork()
         {
-            _context = context;
+            _context = new RentaCarContext();
         }
 
         public IUserDal Users => _efUserDal ?? new EfUserDal();

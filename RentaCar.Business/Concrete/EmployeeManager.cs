@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 using RentaCar.Business.Abstract;
-using RentaCar.DataAccess.Abstract;
+using RentaCar.DataAccess.Concrete;
 using RentaCar.Entities.Concrete;
 
 namespace RentaCar.Business.Concrete
 {
     public class EmployeeManager: IEmployeeService
     {
-        private IUnitofWork _unitofWork;
+        private UnitofWork _unitofWork;
 
-        public EmployeeManager(IUnitofWork unitofWork)
+        public EmployeeManager()
         {
-            _unitofWork = unitofWork;
+            _unitofWork = new UnitofWork();
         }
         public List<Employees> GetAll()
         {

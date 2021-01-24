@@ -5,19 +5,17 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using RentaCar.Business.Abstract;
-using RentaCar.DataAccess.Abstract;
 using RentaCar.DataAccess.Concrete;
-using RentaCar.Entities.Abstract;
 using RentaCar.Entities.Concrete;
 
 namespace RentaCar.Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
-        private IUnitofWork _unitofWork;
-        public CustomerManager(IUnitofWork unitofWork)
+        private UnitofWork _unitofWork;
+        public CustomerManager()
         {
-            _unitofWork = unitofWork;
+            _unitofWork = new UnitofWork();
         }
         public void Add(Customers customer)
         {
