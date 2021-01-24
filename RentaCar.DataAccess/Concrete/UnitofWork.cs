@@ -3,7 +3,6 @@ using RentaCar.DataAccess.Concrete.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rent_a_Car.DataAccess.Concrete.EntityFramework;
 
 namespace RentaCar.DataAccess.Concrete
 {

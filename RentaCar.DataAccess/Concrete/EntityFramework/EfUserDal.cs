@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Rent_a_Car.DataAccess.Concrete.EntityFramework
+namespace RentaCar.DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<Users, RentaCarContext>, IUserDal
     {
