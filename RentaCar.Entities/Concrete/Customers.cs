@@ -8,10 +8,8 @@ using RentaCar.Core.Entities;
 
 namespace RentaCar.Entities.Concrete
 {
-    [Table("Customers")]        
-    public class Customers : Users , IEntity
+    [Table("Customers")]
+    public partial class Customers : Users, IEntity
     {
-        [ForeignKey("CustomerId")]
-        public int CustomerId{ get; set; }
     }
 }

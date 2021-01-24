@@ -19,5 +19,6 @@ namespace RentaCar.Entities.Concrete
         public int TrunkCapacity { get; set; }
         public byte SeatsNumber { get; set; }
         public decimal DailyPrice { get; set; }
+        public bool Available { get; set; }
     }
 }
