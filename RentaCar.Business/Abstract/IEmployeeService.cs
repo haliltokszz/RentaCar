@@ -5,10 +5,10 @@ using System.Text;
 
 namespace RentaCar.Business.Abstract
 {
-    public interface IEmployeeService
+    public interface IEmployeeService 
     {
         List<Employees> GetAll();
-        List<Employees> GetByCompany(int employeeId);
+        List<Employees> GetByCompany(int companyId);
         void Add(Employees employee);
         void Update(Employees employee);
         void Delete(Employees employee);

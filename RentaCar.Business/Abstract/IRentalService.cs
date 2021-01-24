@@ -9,6 +9,8 @@ namespace RentaCar.Business.Abstract
     {
         List<Rentals> GetAll();
         List<Rentals> GetByCustomer(int customerId);
+        List<Rentals> GetByCompany(int companyId);
+        List<Rentals> GetByNoApprove();
         List<Rentals> GetByCar(int carId);
         void Add(Rentals rental);
         void Update(Rentals rental);

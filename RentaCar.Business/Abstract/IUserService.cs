@@ -7,9 +7,6 @@ namespace RentaCar.Business.Abstract
 {
     public interface IUserService
     {
-        List<Users> GetAll();
-        void Add(Users user);
-        void Update(Users user);
-        void Delete(Users user);
+        Users Authenticate(string userName, string password);
     }
 }
