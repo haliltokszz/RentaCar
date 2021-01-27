@@ -24,5 +24,7 @@ namespace RentaCar.Entities.Concrete
         public Employees Employee { get; set; }
         public DateTime ApprovalDate { get; set; }
         public bool Approve { get; set; }
+        public bool Delivered { get; set; }
+        public DateTime DeliveredDate { get; set; }
     }
 }

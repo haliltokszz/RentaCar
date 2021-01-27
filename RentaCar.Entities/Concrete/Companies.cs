@@ -9,6 +9,10 @@ namespace RentaCar.Entities.Concrete
 {
     public class Companies : IEntity
     {
+        public Companies()
+        {
+            Cars = new List<Cars>();
+        }
         public int Id { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
