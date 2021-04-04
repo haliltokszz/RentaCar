@@ -1,0 +1,216 @@
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="registerCustomer()"
+  class="form-register"
+>
+  <h2 class="mt-5">Kayıt ol</h2>
+  <div class="form-group">
+    <input
+      type="text"
+      id="UserName"
+      name="UserName"
+      formControlName="UserName"
+      class="form-control"
+      placeholder="Kullanıcı adı"
+      autofocus
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('UserName').hasError('required') &&
+        registerForm.get('UserName').touched
+      "
+    >
+      Kullanıcı adı gereklidir
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="Password"
+      id="Password"
+      name="Password"
+      formControlName="Password"
+      class="form-control"
+      placeholder="Şifre"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Password').hasError('required') &&
+        registerForm.get('Password').touched
+      "
+    >
+      Şifre gereklidir
+    </span>
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Password').hasError('minlength') &&
+        registerForm.get('Password').touched
+      "
+    >
+      Şifre en az 4 karakter olmalıdır
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="password"
+      id="ConfirmPassword"
+      name="ConfirmPassword"
+      formControlName="ConfirmPassword"
+      class="form-control"
+      placeholder="Şifre"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('ConfirmPassword').hasError('required') &&
+        registerForm.get('ConfirmPassword').touched
+      "
+    >
+      Şifre doğrulama gerekli
+    </span>
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('ConfirmPassword').touched &&
+        registerForm.hasError('mismatch')
+      "
+    >
+      Şifreler uyumsuz
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="text"
+      id="TCno"
+      name="TCno"
+      formControlName="TCno"
+      class="form-control"
+      placeholder="TC Kimlik Numarası"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('TCno').hasError('required') &&
+        registerForm.get('TCno').touched
+      "
+    >
+      TC Kimlik Numarası gereklidir
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="text"
+      id="Name"
+      name="Name"
+      formControlName="Name"
+      class="form-control"
+      placeholder="Ad"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Name').hasError('required') &&
+        registerForm.get('Name').touched
+      "
+    >
+      Ad gereklidir
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="text"
+      id="Surname"
+      name="Surname"
+      formControlName="Surname"
+      class="form-control"
+      placeholder="Soyad"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Surname').hasError('required') &&
+        registerForm.get('Surname').touched
+      "
+    >
+      Soyad gereklidir
+    </span>
+  </div>
+  <mat-form-field appearance="fill" class="example-form-field">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [matDatepicker]="datepicker">
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker>
+      <mat-datepicker-actions>
+        <button mat-button matDatepickerCancel>Cancel</button>
+        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+      </mat-datepicker-actions>
+    </mat-datepicker>
+  </mat-form-field>
+
+  <div class="form-group">
+    <input
+      type="email"
+      id="Email"
+      name="Email"
+      formControlName="Email"
+      class="form-control"
+      placeholder="Email"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Email').hasError('required') &&
+        registerForm.get('Email').touched
+      "
+    >
+      E-mail gereklidir
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="number"
+      id="PhoneNumber"
+      name="PhoneNumber"
+      formControlName="PhoneNumber"
+      class="form-control"
+      placeholder="Phone Number"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('PhoneNumber').hasError('required') &&
+        registerForm.get('PhoneNumber').touched
+      "
+    >
+      Phone Number gereklidir
+    </span>
+  </div>
+  <div class="form-group">
+    <input
+      type="text"
+      id="Address"
+      name="Address"
+      formControlName="Address"
+      class="form-control"
+      placeholder="Address"
+    />
+    <span
+      class="help-block"
+      *ngIf="
+        registerForm.get('Address').hasError('required') &&
+        registerForm.get('Address').touched
+      "
+    >
+      Adres gereklidir
+    </span>
+  </div>
+  <button
+    class="btn btn-lg btn-primary btn-block"
+    [disabled]="!registerForm.valid"
+    type="submit"
+  >
+    Register
+  </button>
+</form>
