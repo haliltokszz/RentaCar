@@ -1,15 +1,15 @@
-﻿using Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Core.Entities;
+﻿using Core.Entities.Abstract;
+using Core.Entities.Concrete;
 
 namespace Entities.Concrete
 {
-    [Table("Customers")]
-    public partial class Customer : User
+    public class Customer : AuditableEntity
     {
+        public int DriveExperience { get; set; }
+        //References
+        public string UserId { get; set; }
+        public User User { get; set; }
+        public string CompanyId { get; set; }
+        public Company Company { get; set; }
     }
 }
