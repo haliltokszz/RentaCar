@@ -1,6 +1,6 @@
-﻿using DataAccess.Abstract;
+﻿using System.Threading.Tasks;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
-using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
@@ -27,7 +27,7 @@ namespace DataAccess.Concrete
 
         public async Task<bool> Save()
         {
-            bool isSuccess = await _context.SaveChangesAsync() > 0;
+            var isSuccess = await _context.SaveChangesAsync() > 0;
             return isSuccess;
         }
 

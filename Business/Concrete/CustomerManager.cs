@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete;
 using Entities.Concrete;
 
 namespace Business.Concrete

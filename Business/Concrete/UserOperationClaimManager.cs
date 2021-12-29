@@ -37,7 +37,7 @@ namespace Business.Concrete
         public async Task<IResult> AddUserClaim(User user)
         {
             var operationClaim = (await _operationClaimService.GetByName("user")).Data;
-            var userOperationClaim = new UserOperationClaim {OperationClaimId = operationClaim.Id, UserId = user.Id};
+            var userOperationClaim = new UserOperationClaim { OperationClaimId = operationClaim.Id, UserId = user.Id };
             await _userOperationClaimDal.AddAsync(userOperationClaim);
             return new SuccessResult(CoreAspectMessages.UserOperationClaimAdded);
         }

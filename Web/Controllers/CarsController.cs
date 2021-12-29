@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet("getbyavailable")]
         public async Task<IActionResult> GetByAvailable()
         {
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet("getbycompany")]
         public async Task<IActionResult> GetByCompany(string companyId)
         {
@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add(Car car)
         {

@@ -1,12 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
-} from "@angular/forms";
-import { CarService } from "src/app/services/car.service";
-import { Car } from "src/app/models/car";
+import {Component, OnInit} from "@angular/core";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {CarService} from "src/app/services/car.service";
+import {Car} from "src/app/models/car";
 
 
 @Component({
@@ -16,13 +11,14 @@ import { Car } from "src/app/models/car";
   providers: [CarService]
 })
 export class CarAddComponent implements OnInit {
+  car: Car;
+  carAddForm: FormGroup;
+
   constructor(
     private carService: CarService,
     private formBuilder: FormBuilder
-  ) {}
-
-  car: Car;
-  carAddForm: FormGroup;
+  ) {
+  }
 
   createCityForm() {
     this.carAddForm = this.formBuilder.group({
@@ -35,9 +31,9 @@ export class CarAddComponent implements OnInit {
     this.createCityForm();
   }
 
-  add(){
-    if(this.carAddForm.valid){
-      this.car = Object.assign({},this.carAddForm.value)
+  add() {
+    if (this.carAddForm.valid) {
+      this.car = Object.assign({}, this.carAddForm.value)
       //Todo
       this.carService.add(this.car);
     }

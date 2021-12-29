@@ -6,6 +6,7 @@ namespace Entities.Concrete
     public class Customer : AuditableEntity
     {
         public int DriveExperience { get; set; }
+
         //References
         public string UserId { get; set; }
         public User User { get; set; }

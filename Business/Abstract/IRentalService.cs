@@ -1,9 +1,7 @@
-﻿using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Utilities.Results;
+using Entities.Concrete;
 
 namespace Business.Abstract
 {
@@ -17,7 +15,7 @@ namespace Business.Abstract
         Task<IDataResult<Rental>> Get(string id);
 
         Task<IDataResult<List<Rental>>> GetAll();
-        
+
         Task<IResult> Add(Rental rental);
 
         Task<IResult> Update(Rental rental);

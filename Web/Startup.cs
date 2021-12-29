@@ -1,13 +1,9 @@
 using System.Text;
-using Business.Abstract;
-using Business.Concrete;
 using Core.DependencyResolvers;
 using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
-using DataAccess.Abstract;
-using DataAccess.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,7 +76,7 @@ namespace WebAPI
 
             services.AddDependencyResolvers(new ICoreModule[]
             {
-                new CoreModule(),
+                new CoreModule()
             });
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -102,10 +98,7 @@ namespace WebAPI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
+            if (!env.IsDevelopment()) app.UseSpaStaticFiles();
 
             app.UseAuthentication();
             app.UseRouting();
@@ -113,8 +106,8 @@ namespace WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    "default",
+                    "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
@@ -124,10 +117,7 @@ namespace WebAPI
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
+                if (env.IsDevelopment()) spa.UseAngularCliServer("start");
             });
         }
     }

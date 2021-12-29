@@ -10,12 +10,13 @@ namespace Business.Concrete
 {
     public class CompanyManager : ICompanyService
     {
-        private ICompanyDal _companyDal;
+        private readonly ICompanyDal _companyDal;
 
         public CompanyManager(ICompanyDal companyDal)
         {
             _companyDal = companyDal;
         }
+
         public async Task<IResult> Add(Company company)
         {
             await _companyDal.AddAsync(company);

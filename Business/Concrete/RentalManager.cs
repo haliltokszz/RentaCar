@@ -16,10 +16,10 @@ namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
-        private readonly IRentalDal _rentalDal;
         private readonly ICarDal _carDal;
-        private readonly IFindeksDal _findeksDal;
         private readonly ICustomerDal _customerDal;
+        private readonly IFindeksDal _findeksDal;
+        private readonly IRentalDal _rentalDal;
 
         public RentalManager(IRentalDal rentalDal, ICarDal carDal, IFindeksDal findeksDal, ICustomerDal customerDal)
         {

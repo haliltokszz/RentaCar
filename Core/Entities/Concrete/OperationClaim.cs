@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Core.Entities.Abstract;
+﻿using Core.Entities.Abstract;
 
 namespace Core.Entities.Concrete
 {
-    public class OperationClaim:AuditableEntity
+    public class OperationClaim : AuditableEntity
     {
         public string Name { get; set; }
     }

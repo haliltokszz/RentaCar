@@ -1,7 +1,7 @@
 ﻿using System;
 using Core.Entities.Abstract;
 
-namespace Entities.DTOs
+namespace Entities.Dtos
 {
     public class UserForRegisterDto : IDto
     {

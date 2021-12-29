@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FulentValidation
 {
-    public class BrandValidator: AbstractValidator<Brand>
+    public class BrandValidator : AbstractValidator<Brand>
     {
         public BrandValidator()
         {

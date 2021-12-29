@@ -5,25 +5,27 @@
 <p *ngIf="!cars"><em>Loading...</em></p>
 <button (click)="getAll()">Get All</button>
 <button (click)="getByAvailable()">Get By Available</button>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="cars">
+<table *ngIf="cars" aria-labelledby="tableLabel" class='table table-striped'>
   <thead>
-    <tr>
-      <th>Name</th>
-      <th>Model</th>
-      <th>Daily Km Limit</th>
-      <th>Available</th>
-      <th>Price</th>
-      <th>Reservation</th>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Model</th>
+    <th>Daily Km Limit</th>
+    <th>Available</th>
+    <th>Price</th>
+    <th>Reservation</th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let car of cars">
-      <td>{{ car.name }}</td>
-      <td>{{ car.model }}</td>
-      <td>{{ car.kmLimitDaily }}</td>
-      <td>{{ car.available }}</td>
-      <td>{{ car.dailyPrice }}</td>
-      <td><button *ngIf="car.available" class="btn btn-success" (click)="goAddRental(car.Id)">Reservation</button></td>
-    </tr>
+  <tr *ngFor="let car of cars">
+    <td>{{ car.name }}</td>
+    <td>{{ car.model }}</td>
+    <td>{{ car.kmLimitDaily }}</td>
+    <td>{{ car.available }}</td>
+    <td>{{ car.dailyPrice }}</td>
+    <td>
+      <button (click)="goAddRental(car.Id)" *ngIf="car.available" class="btn btn-success">Reservation</button>
+    </td>
+  </tr>
   </tbody>
 </table>

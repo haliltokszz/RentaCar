@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
@@ -11,7 +8,7 @@ namespace DataAccess.Abstract
         IUserDal Users { get; }
         ICarDal Cars { get; }
         ICompanyDal Companies { get; }
-        ICustomerDal Customers { get;}
+        ICustomerDal Customers { get; }
         IRentalDal Rentals { get; }
         IBrandDal Brands { get; }
         ICarImageDal CarImages { get; }

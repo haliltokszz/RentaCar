@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { AuthService } from "../../services/auth.service";
+import {Component, OnInit} from "@angular/core";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: "app-customer-login",
@@ -7,21 +7,23 @@ import { AuthService } from "../../services/auth.service";
   styleUrls: ["./customer-login.component.css"]
 })
 export class CustomerLoginComponent implements OnInit {
-  constructor(private authService: AuthService) {}
-
   loginUser: any = {};
 
-  ngOnInit() {}
+  constructor(private authService: AuthService) {
+  }
+
+  get isAuthenticated() {
+    return this.authService.loggedIn();
+  }
+
+  ngOnInit() {
+  }
 
   login() {
-    this.authService.login(this.loginUser,"Customer");
+    this.authService.login(this.loginUser, "Customer");
   }
 
-  logOut(){
+  logOut() {
     this.authService.logOut();
-  }
-
-  get isAuthenticated(){
-     return this.authService.loggedIn();
   }
 }

@@ -1,8 +1,8 @@
-<form *ngIf="!isAuthenticated" #loginForm="ngForm" (ngSubmit)="login()" class="form-inline my-2 my-lg-0">
-    <input class="form-control mr-sm-2" name="UserName" 
-    [(ngModel)]="loginUser.userName" required type="text" placeholder="User Name">
-    <input class="form-control mr-sm-2" name="Password" 
-    [(ngModel)]="loginUser.password" required type="password" placeholder="Password">
-    <button class="btn btn-secondary my-2 my-sm-0" [disabled]="!loginForm.valid"  type="submit">Giriş</button>
-  </form>
-  <button class="btn btn-secondary my-2 my-sm-0" *ngIf="isAuthenticated" (click)="logOut()"  type="submit">Çıkış</button>
+<form #loginForm="ngForm" (ngSubmit)="login()" *ngIf="!isAuthenticated" class="form-inline my-2 my-lg-0">
+  <input [(ngModel)]="loginUser.userName" class="form-control mr-sm-2"
+         name="UserName" placeholder="User Name" required type="text">
+  <input [(ngModel)]="loginUser.password" class="form-control mr-sm-2"
+         name="Password" placeholder="Password" required type="password">
+  <button [disabled]="!loginForm.valid" class="btn btn-secondary my-2 my-sm-0" type="submit">Giriş</button>
+</form>
+<button (click)="logOut()" *ngIf="isAuthenticated" class="btn btn-secondary my-2 my-sm-0" type="submit">Çıkış</button>

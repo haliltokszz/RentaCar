@@ -9,16 +9,16 @@ using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
-using Entities.DTOs;
+using Entities.Dtos;
 
 namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
+        private readonly IMapper _mapper;
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
 
         public AuthManager(ITokenHelper tokenHelper,
             IUserOperationClaimService userOperationClaimService, IUserService userService, IMapper mapper)

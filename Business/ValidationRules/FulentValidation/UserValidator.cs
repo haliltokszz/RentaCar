@@ -1,10 +1,9 @@
 ﻿using Core.Entities.Concrete;
-using Entities.Concrete;
 using FluentValidation;
 
 namespace Business.ValidationRules.FulentValidation
 {
-    public class UserValidator:AbstractValidator<User>
+    public class UserValidator : AbstractValidator<User>
     {
         public UserValidator()
         {

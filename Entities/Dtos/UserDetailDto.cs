@@ -1,6 +1,6 @@
 ﻿using Core.Entities.Abstract;
 
-namespace Entities.DTOs
+namespace Entities.Dtos
 {
     public class UserDetailDto : IDto
     {

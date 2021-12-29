@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FulentValidation
 {
-    public class PaymentValidator: AbstractValidator<Payment>
+    public class PaymentValidator : AbstractValidator<Payment>
     {
         public PaymentValidator()
         {

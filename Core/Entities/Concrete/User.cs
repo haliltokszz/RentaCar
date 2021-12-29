@@ -3,7 +3,7 @@ using Core.Entities.Abstract;
 
 namespace Core.Entities.Concrete
 {
-    public class User:AuditableEntity
+    public class User : AuditableEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -13,6 +13,5 @@ namespace Core.Entities.Concrete
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
         public bool Status { get; set; }
-        
     }
 }

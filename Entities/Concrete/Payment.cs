@@ -2,7 +2,7 @@
 
 namespace Entities.Concrete
 {
-    public class Payment: AuditableEntity
+    public class Payment : AuditableEntity
     {
         public string Number { get; set; }
         public string ExpireMonth { get; set; }

@@ -7,12 +7,9 @@ namespace Core.Utilities.Business
         public static IResult Run(params IResult[] logics)
         {
             foreach (var result in logics)
-            {
                 if (!result.Success)
-                {
                     return new ErrorResult(result.Message);
-                }
-            }
+
             return null;
         }
     }

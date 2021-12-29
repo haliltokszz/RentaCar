@@ -7,14 +7,14 @@ using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using Entities.DTOs;
+using Entities.Dtos;
 
 namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
-        private readonly IUserDal _userDal;
         private readonly IMapper _mapper;
+        private readonly IUserDal _userDal;
 
         public UserManager(IUserDal userDal, IMapper mapper)
         {

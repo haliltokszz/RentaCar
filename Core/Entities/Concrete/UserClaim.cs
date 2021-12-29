@@ -2,7 +2,7 @@
 
 namespace Core.Entities.Concrete
 {
-    public class UserClaim:IEntity
+    public class UserClaim : IEntity
     {
         public int Id { get; set; }
         public int ClaimId { get; set; }

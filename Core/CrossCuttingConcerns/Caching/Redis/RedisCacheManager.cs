@@ -1,6 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 
 namespace Core.CrossCuttingConcerns.Caching.Redis
 {
@@ -18,7 +16,7 @@ namespace Core.CrossCuttingConcerns.Caching.Redis
             //     var valueString = JsonConvert.SerializeObject(value);
             //     redisCache.SetString(key, valueString);
             // }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public T Get<T>(string key)
@@ -34,7 +32,7 @@ namespace Core.CrossCuttingConcerns.Caching.Redis
             //
             //     return default;
             // }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public object Get(string key)
@@ -49,12 +47,12 @@ namespace Core.CrossCuttingConcerns.Caching.Redis
             //     }
             //     return default;
             // }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool IsAdded(string key)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Remove(string key)
@@ -63,12 +61,12 @@ namespace Core.CrossCuttingConcerns.Caching.Redis
             // {
             //     redisCache.Remove(key);
             // }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void RemoveByPattern(string pattern)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

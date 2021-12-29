@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
-using Entities.DTOs;
+using Entities.Dtos;
 
 namespace Business.Abstract
 {

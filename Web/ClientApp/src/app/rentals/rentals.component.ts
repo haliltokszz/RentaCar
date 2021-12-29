@@ -1,7 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Rentals } from '../models/rental';
-import { RentalService } from '../services/rental.service';
+import {Component, OnInit} from '@angular/core';
+import {Rentals} from '../models/rental';
+import {RentalService} from '../services/rental.service';
 
 @Component({
   selector: 'app-rentals',
@@ -12,22 +11,25 @@ import { RentalService } from '../services/rental.service';
 export class RentalsComponent implements OnInit {
   public rentals: Rentals[];
   public apiPath: string;
+
+  constructor(private rentalService: RentalService) {
+  }
+
   public selectPath(path: string) {
     this.apiPath = path;
   }
-  constructor(private rentalService: RentalService) {}
 
   ngOnInit() {
     this.getAll();
   }
 
-  getAll(){
+  getAll() {
     this.rentalService.getAllRentals().subscribe(data => {
       this.rentals = data;
     });
   }
 
-  getApprove(){
+  getApprove() {
     this.rentalService.getRentalsByApprove().subscribe(data => {
       this.rentals = data;
     });

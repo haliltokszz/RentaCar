@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { Rentals } from 'src/app/models/rental';
-import { RentalService } from '../services/rental.service';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {Rentals} from 'src/app/models/rental';
+import {RentalService} from '../services/rental.service';
 
 @Component({
   selector: 'app-car-get',
@@ -13,9 +13,11 @@ export class GetCarsComponent {
 
   constructor(
     private rentalService: RentalService,
-    private router: Router) {}
+    private router: Router) {
+  }
+
   ngOnInit() {
-    
+
   }
 }
 

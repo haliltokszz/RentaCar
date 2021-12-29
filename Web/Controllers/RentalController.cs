@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +10,13 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class RentalController : Controller
     {
-        private IRentalService _rentalService;
+        private readonly IRentalService _rentalService;
 
         public RentalController(IRentalService rentalService)
         {
             _rentalService = rentalService;
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -26,7 +25,7 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -81,8 +80,8 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
-        [HttpPost]
+
+        [HttpPut]
         public async Task<IActionResult> Update(Rental rental)
         {
             var result = await _rentalService.Update(rental);
@@ -91,7 +90,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IActionResult> Delete(Rental rental)
         {
             var result = await _rentalService.Delete(rental);

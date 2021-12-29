@@ -5,23 +5,23 @@
 <p *ngIf="!rentals"><em>Loading...</em></p>
 <button (click)="getAll()">Get All</button>
 <button (click)="getApprove()">Get No Approve</button>
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="rentals">
+<table *ngIf="rentals" aria-labelledby="tableLabel" class='table table-striped'>
   <thead>
-    <tr>
-      <th>Customer ID</th>
-      <th>Car ID</th>
-      <th>Company ID</th>
-      <th>Employee ID</th>
-      <th>Approve</th>
-    </tr>
+  <tr>
+    <th>Customer ID</th>
+    <th>Car ID</th>
+    <th>Company ID</th>
+    <th>Employee ID</th>
+    <th>Approve</th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let rental of rentals">
-      <td>{{ rental.customerId }}</td>
-      <td>{{ rental.carId }}</td>
-      <td>{{ rental.companyId }}</td>
-      <td>{{ rental.employeeId }}</td>
-      <td>{{ rental.approve }}</td>
-    </tr>
+  <tr *ngFor="let rental of rentals">
+    <td>{{ rental.customerId }}</td>
+    <td>{{ rental.carId }}</td>
+    <td>{{ rental.companyId }}</td>
+    <td>{{ rental.employeeId }}</td>
+    <td>{{ rental.approve }}</td>
+  </tr>
   </tbody>
 </table>

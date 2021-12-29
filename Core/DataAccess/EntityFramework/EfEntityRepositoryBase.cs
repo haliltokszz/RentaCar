@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Core.Entities.Abstract;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.DataAccess.EntityFramework
 {
@@ -29,7 +29,7 @@ namespace Core.DataAccess.EntityFramework
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             //IDisposable pattern implementation of c#
-            using (TContext context = new TContext())
+            using (var context = new TContext())
             {
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
@@ -43,7 +43,7 @@ namespace Core.DataAccess.EntityFramework
 
         public async Task DeleteAsync(TEntity entity)
         {
-            using (TContext context = new TContext())
+            using (var context = new TContext())
             {
                 var deletedEntity = context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
@@ -56,14 +56,12 @@ namespace Core.DataAccess.EntityFramework
 
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
         {
-            using (TContext context = new TContext())
+            using (var context = new TContext())
             {
                 var props = typeof(TEntity).GetProperties();
                 var query = GetQuery().Where(filter);
-                foreach (var property in props)
-                {
-                    query = query.Include(property.Name);
-                }
+                foreach (var property in props) query = query.Include(property.Name);
+
                 return await query.SingleOrDefaultAsync();
             }
         }
@@ -72,10 +70,7 @@ namespace Core.DataAccess.EntityFramework
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var query = GetQuery().Where(filter);
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
+            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
 
             return await query.SingleOrDefaultAsync();
         }
@@ -92,17 +87,14 @@ namespace Core.DataAccess.EntityFramework
         {
             IEnumerable<TEntity> entities = await GetAllAsync(filter);
             var query = entities.AsQueryable().AsNoTracking();
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
+            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
 
             return await query.ToListAsync();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            using (TContext context = new TContext())
+            using (var context = new TContext())
             {
                 var updatedEntity = context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
@@ -117,7 +109,7 @@ namespace Core.DataAccess.EntityFramework
 
         private IQueryable<TEntity> GetQuery()
         {
-            using (TContext context = new TContext())
+            using (var context = new TContext())
             {
                 return context.Set<TEntity>().AsQueryable().AsNoTracking();
             }

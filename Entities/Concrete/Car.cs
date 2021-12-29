@@ -2,7 +2,7 @@
 
 namespace Entities.Concrete
 {
-    public class Car:AuditableEntity
+    public class Car : AuditableEntity
     {
         public string Name { get; set; }
         public int ModelYear { get; set; }
@@ -15,7 +15,9 @@ namespace Entities.Concrete
         public byte SeatsNumber { get; set; }
         public decimal DailyPrice { get; set; }
         public bool Available { get; set; }
+
         public short? MinFindeksScore { get; set; }
+
         //References
         public string CompanyId { get; set; }
         public Company Company { get; set; }
@@ -23,7 +25,7 @@ namespace Entities.Concrete
         public Brand Brand { get; set; }
         public string ColorId { get; set; }
         public Color Color { get; set; }
-        
+
         public string ImageId { get; set; }
         public CarImage CarImage { get; set; }
     }

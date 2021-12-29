@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
@@ -8,10 +9,11 @@ using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework;
+using Module = Autofac.Module;
 
 namespace Business.DependencyResolvers.Autofac
 {
-    public class AutofacBusinessModule: Module
+    public class AutofacBusinessModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -29,7 +31,7 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<ColorManager>().As<IColorService>().InstancePerLifetimeScope();
             builder.RegisterType<EfColorDal>().As<IColorDal>().InstancePerLifetimeScope();
-            
+
             builder.RegisterType<CompanyManager>().As<ICompanyService>().InstancePerLifetimeScope();
             builder.RegisterType<EfCompanyDal>().As<ICompanyDal>().InstancePerLifetimeScope();
 
@@ -55,13 +57,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>()
+                .InstancePerLifetimeScope();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().InstancePerLifetimeScope();
 
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
-                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions
                 {
                     Selector = new AspectInterceptorSelector()
                 }).SingleInstance();

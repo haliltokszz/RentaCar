@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Business.Abstract;
-using Entities.DTOs;
+using Entities.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
         {
@@ -20,13 +20,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _userService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
+
             return BadRequest(result);
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
@@ -40,13 +38,11 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Add(UserDetailDto user)
         {
             var result = await _userService.Add(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
+
             return BadRequest(result);
         }
-        
+
         [HttpPut]
         public async Task<IActionResult> Update(UserDetailDto user)
         {
@@ -55,15 +51,13 @@ namespace WebApi.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpDelete]
         public async Task<IActionResult> Delete(UserDetailDto user)
         {
             var result = await _userService.Delete(user);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
+
             return BadRequest(result);
         }
     }

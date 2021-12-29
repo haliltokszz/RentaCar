@@ -62,7 +62,7 @@ namespace Business.Concrete
         public async Task<IResult> Add(CarImage carImage, IFormFile file)
         {
             var result = BusinessRules.Run(
-                 await CheckCarImagesCount(carImage.CarId));
+                await CheckCarImagesCount(carImage.CarId));
             if (result != null) return result;
 
             carImage.ImagePath = FileUpload.Upload(file).Message;
