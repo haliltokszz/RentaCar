@@ -1,76 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
-using DataAccess.Concrete;
+using Business.BusinessAspects.Autofac;
+using Business.Constants;
+using Business.ValidationRules.FulentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        private UnitofWork _unitofWork;
+        private readonly ICarDal _carDal;
 
-        public CarManager()
+        public CarManager(ICarDal carDal)
         {
-            _unitofWork = new UnitofWork();
+            _carDal = carDal;
         }
 
-        public void GetCarCompany(Car car)
-        { 
-            var company = _unitofWork.Companies.Get(c => c.Id == car.CompanyId);
-            car.Company = company;
-            company.Cars.Add(car); //This car is adding to Company's Cars List
+        public async Task<IDataResult<List<Car>>> GetByAvailable()
+        {
+            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync(c => c.Available));
         }
 
-        public void GetCarsCompany(List<Car> cars)
+        [CacheAspect]
+        public async Task<IDataResult<Car>> Get(string id)
         {
-            foreach (var car in cars)
-            { 
-                GetCarCompany(car);
-            }
-        }
-        public void Add(Car car)
-        {
-            _unitofWork.Cars.Add(car);
+            return new SuccessDataResult<Car>(await _carDal.GetAsync(c => c.Id == id));
         }
 
-        public void Delete(Car car)
+        [CacheAspect]
+        public async Task<IDataResult<List<Car>>> GetAll()
         {
-            _unitofWork.Cars.Delete(car);
+            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync());
         }
 
-        public Car GetCar(int carId)
+        public async Task<IDataResult<List<Car>>> GetByCompany(string companyId)
         {
-            var car = _unitofWork.Cars.Get(c=>c.Id == carId);
-            GetCarCompany(car);
-            return car;
+            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync(car => car.CompanyId == companyId,
+                c => c.Company, c => c.CarImage, c => c.Brand, c => c.Color));
         }
 
-        public List<Car> GetAll()
+
+        [SecuredOperation("car.add,moderator,admin")]
+        [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
+        public async Task<IResult> Add(Car car)
         {
-            var cars = _unitofWork.Cars.GetList();
-            GetCarsCompany(cars);
-            return cars;
+            await _carDal.AddAsync(car);
+
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public List<Car> GetByAvailable()
+        [SecuredOperation("car.update,moderator,admin")]
+        [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
+        public async Task<IResult> Update(Car car)
         {
-            var cars= _unitofWork.Cars.GetList(car => car.Available == true);
-            GetCarsCompany(cars);
-            return cars;
+            await _carDal.UpdateAsync(car);
+
+            return new SuccessResult(Messages.CarUpdated);
         }
 
-        public List<Car> GetByCompany(int companyId)
+        [SecuredOperation("car.delete,moderator,admin")]
+        [CacheRemoveAspect("ICarService.Get")]
+        public async Task<IResult> Delete(Car car)
         {
-            var cars= _unitofWork.Cars.GetList(car=>car.CompanyId == companyId);
-            GetCarsCompany(cars);
-            return cars;
-        }
+            await _carDal.DeleteAsync(car);
 
-        public void Update(Car car)
-        {
-            _unitofWork.Cars.Update(car);
+            return new SuccessResult(Messages.CarDeleted);
         }
     }
 }

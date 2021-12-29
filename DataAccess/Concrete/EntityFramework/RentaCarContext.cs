@@ -1,38 +1,39 @@
-﻿using Entities.Concrete;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using Entities.Abstract;
+﻿using System;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Core.Entities.Concrete;
+using Core.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class RentaCarContext : DbContext
     {
-        public RentaCarContext()
-        {
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=MONSTER-HALIL\SQLEXPRESS; Database=RentaCar-NTier; Trusted_Connection=True;");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.AddGlobalFilter(); //Global Filter
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Rental> Rentals { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Customer>().ToTable("Customers"); 
-            builder.Entity<Employee>().ToTable("Employees");
-            builder.Entity<User>().HasKey(u => u.Id);
-            builder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
- 
-        }
-
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<CarImage> CarImages { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Findeks> Findeks { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }

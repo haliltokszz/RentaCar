@@ -1,4 +1,13 @@
 using System.Text;
+using Business.Abstract;
+using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.JWT;
+using DataAccess.Abstract;
+using DataAccess.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,15 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
-using Business.Abstract;
-using Business.Concrete;
-using Core.DependencyResolvers;
-using Core.Extensions;
-using Core.Utilities.IoC;
-using Core.Utilities.Security.Encryption;
-using Core.Utilities.Security.JWT;
 
-namespace Web
+namespace WebAPI
 {
     public class Startup
     {
@@ -32,6 +34,8 @@ namespace Web
         {
             services.AddCors();
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
+            services.AddAutoMapper(typeof(Startup));
             services.AddMvc().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -74,25 +78,12 @@ namespace Web
                 });
 
 
-
             services.AddDependencyResolvers(new ICoreModule[]
             {
                 new CoreModule(),
             });
-
-            //services.AddSingleton<IUnitofWork, UnitofWork>();
-            services.AddSingleton<IAuthService>(new AuthManager(key.ToString()));
-            services.AddScoped<ICustomerService, CustomerManager>();
-            services.AddScoped<IEmployeeService, EmployeeManager>();
-            services.AddScoped<ICarService, CarManager>();
-            services.AddScoped<ICompanyService, CompanyManager>();
-            services.AddScoped<IRentalService, RentalManager>();
-
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

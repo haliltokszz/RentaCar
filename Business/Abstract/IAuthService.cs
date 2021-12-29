@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Entities.Abstract;
-using Entities.Dtos;
+using Core.Entities.Concrete;
+using Core.Utilities.Results;
+using Core.Utilities.Security.JWT;
+using Entities.DTOs;
 
 namespace Business.Abstract
 {
     public interface IAuthService
     {
-        string Login(UserForLoginDto userForLoginDto, string userType);
         User CreatePasswordHash(User user, string password);
-        bool UserExist(string userName, string userType);
+        Task<IDataResult<User>> Login(UserForLoginDto userForLoginDto);
+        Task<IDataResult<User>> Register(UserForRegisterDto userForRegisterDto, string password);
+        Task<IResult> UserExists(string email);
+        IDataResult<AccessToken> CreateAccessToken(User user);
+        Task<IResult> IsAuthenticated(string userMail, List<string> requiredRoles);
     }
 }

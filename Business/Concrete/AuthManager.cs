@@ -1,68 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Core.Constants;
+using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
-using DataAccess.Concrete;
-using Entities.Abstract;
-using Entities.Dtos;
+using Core.Utilities.Security.JWT;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private UnitofWork _unitofWork = new UnitofWork();
-        private readonly string _key;
+        private readonly ITokenHelper _tokenHelper;
+        private readonly IUserOperationClaimService _userOperationClaimService;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public AuthManager(string key)
+        public AuthManager(ITokenHelper tokenHelper,
+            IUserOperationClaimService userOperationClaimService, IUserService userService, IMapper mapper)
         {
-            _key = key;
+            _tokenHelper = tokenHelper;
+            _userOperationClaimService = userOperationClaimService;
+            _userService = userService;
+            _mapper = mapper;
         }
 
-        public string CreateAccessToken(User user)
+        public async Task<IResult> UserExists(string email)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenKey = Encoding.ASCII.GetBytes(_key);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName)
-                }),
-                Expires = DateTime.UtcNow.AddHours(3),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var userResult = await _userService.GetByMail(email);
+            if (!userResult.Success) return new ErrorResult(userResult.Message);
+            if (userResult.Data != null) return new ErrorResult(CoreAspectMessages.UserAlreadyExists);
+
+            return new SuccessResult();
         }
 
-        public string Login(UserForLoginDto userForLoginDto, string userType)
+        [SecuredOperation("user")]
+        public async Task<IResult> IsAuthenticated(string userMail, List<string> requiredRoles)
         {
-            User userToCheck;
-            if (userType == "Customer")
-                 userToCheck = _unitofWork.Customers.Get(u=> userForLoginDto.UserName == u.UserName);
-            else
-                userToCheck = _unitofWork.Employees.Get(u => userForLoginDto.UserName == u.UserName);
-            if (userToCheck == null)
+            if (requiredRoles != null)
             {
-                return "User is not exist";
+                var user = (await _userService.GetByMail(userMail)).Data;
+                var userClaims = _userService.GetClaims(user).Data;
+                var doesUserHaveRequiredRoles =
+                    requiredRoles.All(role => userClaims.Select(userClaim => userClaim.Name).Contains(role));
+                if (!doesUserHaveRequiredRoles) return new ErrorResult(CoreAspectMessages.AuthorizationDenied);
             }
 
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
-            {
-                return "User password is not correct";
-            }
+            return new SuccessResult();
+        }
 
-            return CreateAccessToken(userToCheck);
+        public IDataResult<AccessToken> CreateAccessToken(User user)
+        {
+            var claimsResult = _userService.GetClaims(user);
+            if (!claimsResult.Success) return new ErrorDataResult<AccessToken>(claimsResult.Message);
+            var accessToken = _tokenHelper.CreateToken(user, claimsResult.Data);
 
+            return new SuccessDataResult<AccessToken>(accessToken, CoreAspectMessages.AccessTokenCreated);
+        }
+
+        public async Task<IDataResult<User>> Login(UserForLoginDto userForLoginDto)
+        {
+            var userToCheckResult = await _userService.GetByMail(userForLoginDto.Email);
+            if (!userToCheckResult.Success) return new ErrorDataResult<User>(userToCheckResult.Message);
+
+            var userToCheck = userToCheckResult.Data;
+            if (userToCheck == null) return new ErrorDataResult<User>(CoreAspectMessages.UserNotFound);
+
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash,
+                    userToCheck.PasswordSalt)) return new ErrorDataResult<User>(CoreAspectMessages.PasswordError);
+
+            return new SuccessDataResult<User>(userToCheck, CoreAspectMessages.SuccessfulLogin);
         }
 
         public User CreatePasswordHash(User user, string password)
@@ -74,16 +85,18 @@ namespace Business.Concrete
             return user;
         }
 
-        public bool UserExist(string userName, string userType)
+        public async Task<IDataResult<User>> Register(UserForRegisterDto userForRegisterDto, string password)
         {
-            if(userType=="Customer")
-                if (_unitofWork.Customers.Get(u => u.UserName == userName) != null) return true;
-                else return false;
-            else if (userType=="Employee")
-                if (_unitofWork.Employees.Get(u => u.UserName == userName) != null) return true;
-                else return false;
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var newUser = _mapper.Map<User>(userForRegisterDto);
+            newUser.PasswordHash = passwordHash;
+            newUser.PasswordSalt = passwordSalt;
 
-            return false;
+            await _userService.Register(newUser);
+            var user = (await _userService.GetByMail(newUser.Email)).Data;
+            await _userOperationClaimService.AddUserClaim(user);
+            return new SuccessDataResult<User>(user, CoreAspectMessages.UserRegistered);
         }
     }
 }

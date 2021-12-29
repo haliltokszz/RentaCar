@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
-using DataAccess.Concrete;
+using Business.Constants;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete
 {
     public class CompanyManager : ICompanyService
     {
-        private UnitofWork _unitofWork;
+        private ICompanyDal _companyDal;
 
-        public CompanyManager()
+        public CompanyManager(ICompanyDal companyDal)
         {
-            _unitofWork = new UnitofWork();
+            _companyDal = companyDal;
         }
-        public void Add(Company company)
+        public async Task<IResult> Add(Company company)
         {
-            _unitofWork.Companies.Add(company);
-        }
-
-        public void Delete(Company company)
-        {
-            _unitofWork.Companies.Delete(company);
+            await _companyDal.AddAsync(company);
+            return new SuccessResult(Messages.CompanyAdded);
         }
 
-        public List<Company> GetAll()
+        public async Task<IResult> Delete(Company company)
         {
-            return _unitofWork.Companies.GetList();
+            await _companyDal.DeleteAsync(company);
+            return new SuccessResult(Messages.CompanyDeleted);
         }
 
-        public void Update(Company company)
+        public async Task<IDataResult<List<Company>>> GetAll()
         {
-            _unitofWork.Companies.Update(company);
+            return new SuccessDataResult<List<Company>>(await _companyDal.GetAllAsync());
+        }
+
+        public async Task<IResult> Update(Company company)
+        {
+            await _companyDal.UpdateAsync(company);
+            return new SuccessResult(Messages.CompanyUpdated);
         }
     }
 }

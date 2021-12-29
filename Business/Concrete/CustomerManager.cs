@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Business.Constants;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
 using DataAccess.Concrete;
 using Entities.Concrete;
 
@@ -12,29 +17,46 @@ namespace Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
-        private UnitofWork _unitofWork;
-        public CustomerManager()
+        private readonly ICustomerDal _customerDal;
+
+        public CustomerManager(ICustomerDal customerManager)
         {
-            _unitofWork = new UnitofWork();
-        }
-        public void Add(Customer customer)
-        {
-            _unitofWork.Customers.Add(customer);
+            _customerDal = customerManager;
         }
 
-        public void Delete(Customer customer)
+        [SecuredOperation("customer.get,moderator,admin")]
+        public async Task<IDataResult<Customer>> Get(string id)
         {
-            _unitofWork.Customers.Delete(customer);
+            return new SuccessDataResult<Customer>(await _customerDal.GetAsync(c => c.Id == id));
         }
 
-        public List<Customer> GetAll()
+        [SecuredOperation("customer.get,moderator,admin")]
+        public async Task<IDataResult<List<Customer>>> GetAll()
         {
-            return _unitofWork.Customers.GetList();
+            return new SuccessDataResult<List<Customer>>(await _customerDal.GetAllAsync());
         }
 
-        public void Update(Customer customer)
+        public async Task<IResult> Add(Customer customer)
         {
-            _unitofWork.Customers.Update(customer);
+            await _customerDal.AddAsync(customer);
+
+            return new SuccessResult(Messages.CustomerCreated);
+        }
+
+        [SecuredOperation("customer.update,moderator,admin")]
+        public async Task<IResult> Update(Customer customer)
+        {
+            await _customerDal.UpdateAsync(customer);
+
+            return new SuccessResult(Messages.CustomerUpdated);
+        }
+
+        [SecuredOperation("customer.delete,moderator,admin")]
+        public async Task<IResult> Delete(Customer customer)
+        {
+            await _customerDal.DeleteAsync(customer);
+
+            return new SuccessResult(Messages.CustomerDeleted);
         }
     }
 }

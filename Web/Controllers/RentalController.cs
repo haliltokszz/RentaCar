@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Business.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Web.Controllers
+namespace WebAPI.Controllers
 {
     //[Authorize]
     [ApiController]
@@ -20,45 +17,87 @@ namespace Web.Controllers
         {
             _rentalService = rentalService;
         }
-
-        // GET: api/car/getall
-        [HttpGet("getall")]
-        public IEnumerable<Rental> Get()
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
         {
-            var rentals = _rentalService.GetAll();
-            return rentals;
+            var result = await _rentalService.Get(id);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _rentalService.GetAll();
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
         [HttpGet("getbycompany/{companyId}")]
-        public IEnumerable<Rental> GetByCompany(int companyId)
+        public async Task<IActionResult> GetByCompany(string companyId)
         {
-            var rentals = _rentalService.GetByCompany(companyId);
-            return rentals;
-        }
-        [HttpGet("getbycustomer/{customerId}")]
-        public IEnumerable<Rental> GetByCustomer(int customerId)
-        {
-            var rentals = _rentalService.GetByCustomer(customerId);
-            return rentals;
-        }
-        [HttpGet("getbycar/{carId}")]
-        public IEnumerable<Rental> GetByCar(int carId)
-        {
-            var rentals = _rentalService.GetByCar(carId);
-            return rentals;
-        }
-        [HttpGet("getbynoapprove")]
-        public IEnumerable<Rental> GetByNoApprove()
-        {
-            var rentals = _rentalService.GetByNoApprove();
-            return rentals;
+            var result = await _rentalService.GetByCompany(companyId);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
         }
 
-        [HttpPost("add")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add([FromBody] Rental rentals)
+        [HttpGet("getbycustomer/{customerId}")]
+        public async Task<IActionResult> GetByCustomer(string customerId)
         {
-            _rentalService.Add(rentals);
-            return Ok(rentals);
+            var result = await _rentalService.GetByCustomer(customerId);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbycar/{carId}")]
+        public async Task<IActionResult> GetByCar(string carId)
+        {
+            var result = await _rentalService.GetByCar(carId);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbynoapprove")]
+        public async Task<IActionResult> GetByNoApprove()
+        {
+            var result = await _rentalService.GetByNoApprove();
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add([FromBody] Rental rental)
+        {
+            var result = await _rentalService.Add(rental);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Update(Rental rental)
+        {
+            var result = await _rentalService.Update(rental);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Rental rental)
+        {
+            var result = await _rentalService.Delete(rental);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
         }
     }
 }
