@@ -1,5 +1,4 @@
-﻿using System;
-using Core.Entities.Concrete;
+﻿using Core.Entities.Concrete;
 using Core.Extensions;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
@@ -20,14 +19,22 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Findeks> Findeks { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-
+        public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<RentalCount> RentalCounts { get; set; }
+        public DbSet<RentalEstimate> RentalEstimates { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(
+                    "Server=MONSTER-HALIL\\SQLEXPRESS; Database=RentaCar; Trusted_Connection=True; MultipleActiveResultSets=true");
+                // IConfigurationRoot configuration = new ConfigurationBuilder()
+                //     .SetBasePath(Directory.GetCurrentDirectory())
+                //     .AddJsonFile("appsettings.json")
+                //     .Build();
+                // var connectionString = configuration.GetConnectionString("DefaultConnection");
+                // optionsBuilder.UseSqlServer(connectionString);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

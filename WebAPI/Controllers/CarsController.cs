@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
+using Entities.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -26,9 +28,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromBody] CarFilter filter)
         {
-            var result = await _carService.GetAll();
+            var result = await _carService.GetAll(pageFilter, filter);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);
@@ -38,15 +40,6 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetByAvailable()
         {
             var result = await _carService.GetByAvailable();
-            if (result.Success) return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbycompany")]
-        public async Task<IActionResult> GetByCompany(string companyId)
-        {
-            var result = await _carService.GetByCompany(companyId);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);

@@ -3,9 +3,12 @@ using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Core.Entities.Concrete;
+using Core.Utilities.Filter;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Filters;
 
 namespace Business.Concrete
 {
@@ -22,10 +25,12 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Color>(await _colorDal.GetAsync(c => c.Id == id));
         }
-
-        public async Task<IDataResult<List<Color>>> GetAll()
+        public async Task<IDataResult<List<Color>>> GetAll(BrandAndColorFilter filter = null)
         {
-            return new SuccessDataResult<List<Color>>(await _colorDal.GetAllAsync());
+            if(filter==null) return new SuccessDataResult<List<Color>>(await _colorDal.GetAllAsync());
+            
+            var exp = Filter.DynamicFilter<Color, BrandAndColorFilter>(filter);
+            return new SuccessDataResult<List<Color>>(await _colorDal.GetAllAsync(exp));
         }
 
         [SecuredOperation("color.add,moderator,admin")]

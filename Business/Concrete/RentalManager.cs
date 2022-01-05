@@ -7,10 +7,12 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FulentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Filters;
 
 namespace Business.Concrete
 {
@@ -20,13 +22,16 @@ namespace Business.Concrete
         private readonly ICustomerDal _customerDal;
         private readonly IFindeksDal _findeksDal;
         private readonly IRentalDal _rentalDal;
+        private readonly IRentalCountDal _rentalCountDal;
 
-        public RentalManager(IRentalDal rentalDal, ICarDal carDal, IFindeksDal findeksDal, ICustomerDal customerDal)
+        public RentalManager(IRentalDal rentalDal, ICarDal carDal, IFindeksDal findeksDal, ICustomerDal customerDal,
+            IRentalCountDal rentalCountDal)
         {
             _rentalDal = rentalDal;
             _carDal = carDal;
             _findeksDal = findeksDal;
             _customerDal = customerDal;
+            _rentalCountDal = rentalCountDal;
         }
 
         [SecuredOperation("user,rental.add,moderator,admin")]
@@ -46,6 +51,31 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalCreated);
         }
 
+        public async Task<IResult> Delivered(Rental rental)
+        {
+            rental.Delivered = true;
+            rental.DeliveredDate = DateTime.UtcNow;
+            var car = await _carDal.GetAsync(c => c.Id == rental.CarId);
+            car.Available = true;
+            car.KmCurrent = rental.KmDelivery;
+            await _carDal.UpdateAsync(car);
+            await _rentalDal.UpdateAsync(rental);
+
+            return new SuccessResult(Messages.RentalDelivered);
+        }
+
+        public async Task<IResult> Approve(Rental rental)
+        {
+            rental.Approve = true;
+            rental.ApprovalDate = DateTime.UtcNow;
+            var car = await _carDal.GetAsync(c => c.Id == rental.CarId);
+            car.Available = false;
+            await _carDal.UpdateAsync(car);
+            await _rentalDal.UpdateAsync(rental);
+
+            return new SuccessResult(Messages.RentalApproved);
+        }
+
         [SecuredOperation("rental.update,moderator,admin")]
         [ValidationAspect(typeof(RentalValidator))]
         public async Task<IResult> Update(Rental customer)
@@ -63,10 +93,32 @@ namespace Business.Concrete
             return new SuccessResult(Messages.RentalDeleted);
         }
 
-        [SecuredOperation("user,rental.get,moderator,admin")]
-        public async Task<IDataResult<List<Rental>>> GetAll()
+        private async Task<IResult> AddRentalCountByCategory(CarCategories category)
         {
-            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAllAsync());
+            RentalCount rentalCountByCategory =
+                await _rentalCountDal.GetAsync(r => r.Category == category && r.Month == DateTime.Now.Month);
+            if (rentalCountByCategory == null)
+            {
+                var newRentalCountPerMonthByCategory = new RentalCount
+                {
+                    Category = category,
+                    Month = DateTime.Now.Month,
+                    TotalRent = 1
+                };
+                await _rentalCountDal.AddAsync(newRentalCountPerMonthByCategory);
+                return new SuccessResult();
+            }
+
+            rentalCountByCategory.TotalRent++;
+            await _rentalCountDal.UpdateAsync(rentalCountByCategory);
+            return new SuccessResult();
+        }
+
+        [SecuredOperation("user,rental.get,moderator,admin")]
+        public async Task<IDataResult<List<Rental>>> GetAll(PageFilter pageFilter, RentalFilter filter = null)
+        {
+            return new SuccessPagedDataResult<List<Rental>>(
+                await _rentalDal.GetAllAsync(pageFilter, filter, r => r.Company, r => r.Customer, r => r.Car));
         }
 
         [SecuredOperation("user,rental.get,moderator,admin")]
@@ -75,21 +127,6 @@ namespace Business.Concrete
             return new SuccessDataResult<Rental>(await _rentalDal.GetAsync(r => r.Id == id));
         }
 
-        public async Task<IDataResult<List<Rental>>> GetByCar(string carId)
-        {
-            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAllAsync(r => r.CarId == carId, r => r.Car,
-                r => r.Company, r => r.Customer));
-        }
-
-        public async Task<IDataResult<List<Rental>>> GetByCompany(string companyId)
-        {
-            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAllAsync(r => r.CompanyId == companyId));
-        }
-
-        public async Task<IDataResult<List<Rental>>> GetByCustomer(string customerId)
-        {
-            return new SuccessDataResult<List<Rental>>(await _rentalDal.GetAllAsync(r => r.CustomerId == customerId));
-        }
 
         public async Task<IDataResult<List<Rental>>> GetByNoApprove()
         {
@@ -98,7 +135,7 @@ namespace Business.Concrete
 
         private async Task<IResult> IsRentable(Rental rental)
         {
-            var rentals = await _rentalDal.GetAllAsync(r => r.CarId == rental.CarId);
+            var rentals = await _rentalDal.GetAllAsync(r => r.CarId == rental.CarId, r => r.Car);
 
             if (rentals.Any(r =>
                     !r.Delivered || r.EndDate > DateTime.UtcNow

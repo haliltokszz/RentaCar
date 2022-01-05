@@ -17,14 +17,11 @@ namespace Business.Concrete
     {
         private readonly IMapper _mapper;
         private readonly ITokenHelper _tokenHelper;
-        private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IUserService _userService;
 
-        public AuthManager(ITokenHelper tokenHelper,
-            IUserOperationClaimService userOperationClaimService, IUserService userService, IMapper mapper)
+        public AuthManager(ITokenHelper tokenHelper, IUserService userService, IMapper mapper)
         {
             _tokenHelper = tokenHelper;
-            _userOperationClaimService = userOperationClaimService;
             _userService = userService;
             _mapper = mapper;
         }
@@ -93,10 +90,8 @@ namespace Business.Concrete
             newUser.PasswordHash = passwordHash;
             newUser.PasswordSalt = passwordSalt;
 
-            await _userService.Register(newUser);
-            var user = (await _userService.GetByMail(newUser.Email)).Data;
-            await _userOperationClaimService.AddUserClaim(user);
-            return new SuccessDataResult<User>(user, CoreAspectMessages.UserRegistered);
+            var result = await _userService.Register(newUser);
+            return new SuccessDataResult<User>(newUser, result.Message);
         }
     }
 }

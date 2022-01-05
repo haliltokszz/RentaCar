@@ -15,11 +15,16 @@ namespace Business.Concrete
     {
         private readonly IMapper _mapper;
         private readonly IUserDal _userDal;
+        private readonly IUserOperationClaimDal _userOperationClaimDal;
+        private readonly IOperationClaimDal _operationClaimDal;
 
-        public UserManager(IUserDal userDal, IMapper mapper)
+        public UserManager(IUserDal userDal, IMapper mapper, IUserOperationClaimDal userOperationClaimDal,
+            IOperationClaimDal operationClaimDal)
         {
             _userDal = userDal;
             _mapper = mapper;
+            _userOperationClaimDal = userOperationClaimDal;
+            _operationClaimDal = operationClaimDal;
         }
 
         [SecuredOperation("user.get,moderator,admin")]
@@ -56,6 +61,15 @@ namespace Business.Concrete
         public async Task<IResult> Register(User user)
         {
             await _userDal.AddAsync(user);
+            var defaultOperationClaim = await _operationClaimDal.GetAsync(o => o.Name == "User");
+            if (defaultOperationClaim is not null)
+            {
+                await _userOperationClaimDal.AddAsync(new UserOperationClaim
+                {
+                    UserId = user.Id,
+                    OperationClaimId = defaultOperationClaim.Id
+                });
+            }
             return new SuccessResult(Messages.UserCreated);
         }
 

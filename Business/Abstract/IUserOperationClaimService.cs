@@ -7,7 +7,7 @@ namespace Business.Abstract
 {
     public interface IUserOperationClaimService
     {
-        Task<IDataResult<UserOperationClaim>> GetById(string id);
+        Task<IDataResult<UserOperationClaim>> Get(string id);
 
         Task<IDataResult<List<UserOperationClaim>>> GetAll();
 

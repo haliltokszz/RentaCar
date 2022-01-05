@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
-using Core.Constants;
+using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -18,7 +18,7 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
-        public async Task<IDataResult<OperationClaim>> GetById(string id)
+        public async Task<IDataResult<OperationClaim>> Get(string id)
         {
             return new SuccessDataResult<OperationClaim>(await _operationClaimDal.GetAsync(o => o.Id == id));
         }
@@ -38,7 +38,7 @@ namespace Business.Concrete
         {
             await _operationClaimDal.AddAsync(operationClaim);
 
-            return new SuccessResult(CoreAspectMessages.OperationClaimAdded);
+            return new SuccessResult(Messages.OperationClaimAdded);
         }
 
         [SecuredOperation("admin")]
@@ -46,7 +46,7 @@ namespace Business.Concrete
         {
             await _operationClaimDal.UpdateAsync(operationClaim);
 
-            return new SuccessResult(CoreAspectMessages.OperationClaimUpdated);
+            return new SuccessResult(Messages.OperationClaimUpdated);
         }
 
         [SecuredOperation("admin")]
@@ -54,7 +54,7 @@ namespace Business.Concrete
         {
             await _operationClaimDal.DeleteAsync(operationClaim);
 
-            return new SuccessResult(CoreAspectMessages.OperationClaimDeleted);
+            return new SuccessResult(Messages.OperationClaimDeleted);
         }
     }
 }

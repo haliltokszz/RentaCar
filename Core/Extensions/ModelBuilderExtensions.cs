@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using Core.Entities.Abstract;
@@ -28,7 +29,7 @@ namespace Core.Extensions
             SetSoftDeleteFilterMethod.MakeGenericMethod(entityType)
                 .Invoke(null, new object[] { modelBuilder });
         }
-
+        
         public static void SetSoftDeleteFilter<TEntity>(this ModelBuilder modelBuilder)
             where TEntity : AuditableEntity
         {

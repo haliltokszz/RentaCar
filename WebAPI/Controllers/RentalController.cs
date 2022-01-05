@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
+using Entities.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RentalController : Controller
@@ -27,36 +30,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromBody] RentalFilter filter)
         {
-            var result = await _rentalService.GetAll();
-            if (result.Success) return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbycompany/{companyId}")]
-        public async Task<IActionResult> GetByCompany(string companyId)
-        {
-            var result = await _rentalService.GetByCompany(companyId);
-            if (result.Success) return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbycustomer/{customerId}")]
-        public async Task<IActionResult> GetByCustomer(string customerId)
-        {
-            var result = await _rentalService.GetByCustomer(customerId);
-            if (result.Success) return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbycar/{carId}")]
-        public async Task<IActionResult> GetByCar(string carId)
-        {
-            var result = await _rentalService.GetByCar(carId);
+            var result = await _rentalService.GetAll(pageFilter, filter);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);
@@ -76,6 +52,24 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add([FromBody] Rental rental)
         {
             var result = await _rentalService.Add(rental);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+        [HttpPost("delivered")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delivered([FromBody] Rental rental)
+        {
+            var result = await _rentalService.Delivered(rental);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+        [HttpPost("approve")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Approve([FromBody] Rental rental)
+        {
+            var result = await _rentalService.Approve(rental);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);

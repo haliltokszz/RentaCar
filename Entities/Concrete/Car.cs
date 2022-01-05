@@ -6,6 +6,7 @@ namespace Entities.Concrete
     {
         public string Name { get; set; }
         public int ModelYear { get; set; }
+        public CarCategories Category { get; set; }
         public string Description { get; set; }
         public byte RequiredDriveExperience { get; set; }
         public byte LimitMinAge { get; set; }

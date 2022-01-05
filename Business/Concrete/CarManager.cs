@@ -6,9 +6,11 @@ using Business.Constants;
 using Business.ValidationRules.FulentValidation;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Filters;
 
 namespace Business.Concrete
 {
@@ -33,17 +35,11 @@ namespace Business.Concrete
         }
 
         [CacheAspect]
-        public async Task<IDataResult<List<Car>>> GetAll()
+        public async Task<IDataResult<List<Car>>> GetAll(PageFilter pageFilter, CarFilter filter)
         {
-            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync());
+            return new SuccessPagedDataResult<List<Car>>(await _carDal.GetAllAsync(pageFilter, filter, c => c.Brand,
+                c => c.Color, c => c.Company, c => c.CarImage));
         }
-
-        public async Task<IDataResult<List<Car>>> GetByCompany(string companyId)
-        {
-            return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync(car => car.CompanyId == companyId,
-                c => c.Company, c => c.CarImage, c => c.Brand, c => c.Color));
-        }
-
 
         [SecuredOperation("car.add,moderator,admin")]
         [ValidationAspect(typeof(CarValidator))]

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Business.Abstract;
+using Core.Entities.Concrete;
 using Entities.Concrete;
+using Entities.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -26,9 +28,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromBody] BrandAndColorFilter filter= null)
         {
-            var result = await _brandService.GetAll();
+            var result = await _brandService.GetAll(filter);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);

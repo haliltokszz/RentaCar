@@ -72,6 +72,8 @@
         public static string RentalUpdated = "Rental updated successfully.";
         public static string CarAlreadyRented = "The car is already for rented.";
         public static string RentalUndeliveredCar = "The car has not yet been delivered.";
+        public static string RentalDelivered = "The car has been delivered.";
+        public static string RentalApproved = "The rental has been approved.";
         public static string RentalNotAvailable = "Rental is not available between the selected dates.";
 
         #endregion
@@ -92,6 +94,36 @@
         public static string CarImageUpdated = "Car image has updated.";
         public static string CarImageDeleted = "Car image has deleted.";
         public static string CarImageCountError = "The images of the car are the maximum number.";
+
+        #endregion
+
+        #region Payment
+
+        public static string PaymentFailed = "Payment failed.";
+        public static string PaymentSuccessful = "Payment Successful.";
+
+        #endregion
+
+        #region UserOperationClaim
+
+        public static string UserOperationClaimAdded = "User operation claim has added.";
+        public static string UserOperationClaimUpdated = "User operation claim has updated.";
+        public static string UserOperationClaimDeleted = "User operation claim has deleted.";
+
+        #endregion
+
+        #region OperationClaim
+
+        public static string OperationClaimAdded = "Operation claim has added.";
+        public static string OperationClaimUpdated = "Operation claim has updated.";
+        public static string OperationClaimDeleted = "Operation claim has deleted.";
+
+        #endregion
+
+        #region CreditCard
+
+        public static readonly string CreditCardAdded = "Credit card has added.";
+        public static readonly string CreditCardDeleted = "Credit card has deleted.";
 
         #endregion
     }

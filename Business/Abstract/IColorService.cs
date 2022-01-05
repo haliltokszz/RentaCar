@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Filters;
 
 namespace Business.Abstract
 {
@@ -9,7 +10,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<Color>> Get(string id);
 
-        Task<IDataResult<List<Color>>> GetAll();
+        Task<IDataResult<List<Color>>> GetAll(BrandAndColorFilter filter = null);
 
         Task<IResult> Add(Color color);
 

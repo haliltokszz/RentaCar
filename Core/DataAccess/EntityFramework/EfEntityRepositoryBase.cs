@@ -4,26 +4,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Autofac;
 using Core.Entities.Abstract;
+using Core.Entities.Concrete;
+using Core.Extensions;
+using Core.Utilities.Filter;
+using Core.Utilities.IoC;
+using Entities.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.DataAccess.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
-        where TEntity : class, IEntity, new()
+        where TEntity : AuditableEntity, new()
         where TContext : DbContext, new()
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly TContext _context;
 
         public EfEntityRepositoryBase()
         {
-            var builder = new ContainerBuilder();
-            using (var container = builder.Build())
-            {
-                _httpContextAccessor = container.Resolve<IHttpContextAccessor>();
-            }
+            _context = new TContext();
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
@@ -33,9 +36,9 @@ namespace Core.DataAccess.EntityFramework
             {
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
-                (addedEntity as AuditableEntity).CreatedTime = DateTime.UtcNow;
-                (addedEntity as AuditableEntity).CreatedBy =
-                    _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                addedEntity.Entity.CreatedTime = DateTime.UtcNow;
+                // addedEntity.Entity.CreatedBy =
+                //     _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 await context.SaveChangesAsync(); //remove for UoW
                 return entity;
             }
@@ -46,9 +49,10 @@ namespace Core.DataAccess.EntityFramework
             using (var context = new TContext())
             {
                 var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                (deletedEntity as AuditableEntity).Deleted = true;
-                (deletedEntity as AuditableEntity).DeletedTime =
+                //deletedEntity.State = EntityState.Deleted; #soft-delete
+                deletedEntity.State = EntityState.Modified;
+                deletedEntity.Entity.Deleted = true;
+                deletedEntity.Entity.DeletedTime =
                     DateTime.UtcNow;
                 await context.SaveChangesAsync();
             }
@@ -60,7 +64,10 @@ namespace Core.DataAccess.EntityFramework
             {
                 var props = typeof(TEntity).GetProperties();
                 var query = GetQuery().Where(filter);
-                foreach (var property in props) query = query.Include(property.Name);
+                foreach (var property in props)
+                {
+                    if (property.GetType() == typeof(IEntity)) query = query.Include(property.Name);
+                }
 
                 return await query.SingleOrDefaultAsync();
             }
@@ -74,22 +81,45 @@ namespace Core.DataAccess.EntityFramework
 
             return await query.SingleOrDefaultAsync();
         }
-
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
+        
+        public async Task<List<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return await (filter == null
-                ? GetQuery().ToListAsync()
-                : GetQuery().Where(filter).ToListAsync());
-        }
+            var query = GetQuery();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null,
-            params Expression<Func<TEntity, object>>[] includeProperties)
-        {
-            IEnumerable<TEntity> entities = await GetAllAsync(filter);
-            var query = entities.AsQueryable().AsNoTracking();
             foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
 
             return await query.ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(PageFilter pageFilter,
+            Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            
+            var query = GetQuery();
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            query = query.OrderByDynamic(pageFilter.Column, pageFilter.Descending)
+                .Skip((pageFilter.PageNumber - 1) * pageFilter.PageSize).Take(pageFilter.PageSize);
+
+            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(PageFilter pageFilter, IFilter filter = null,
+            params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            return await (filter == null
+                ? GetAllAsync(pageFilter, filter)
+                : GetAllAsync(pageFilter, Filter.DynamicFilter<TEntity, IFilter>(filter)));
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -98,9 +128,9 @@ namespace Core.DataAccess.EntityFramework
             {
                 var updatedEntity = context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
-                (updatedEntity as AuditableEntity).ModifiedBy = _httpContextAccessor.HttpContext.User
+                updatedEntity.Entity.ModifiedBy = _httpContextAccessor.HttpContext.User
                     .FindFirst(ClaimTypes.NameIdentifier).Value;
-                (updatedEntity as AuditableEntity).ModifiedTime =
+                updatedEntity.Entity.ModifiedTime =
                     DateTime.UtcNow;
                 await context.SaveChangesAsync();
                 return entity;
@@ -109,10 +139,11 @@ namespace Core.DataAccess.EntityFramework
 
         private IQueryable<TEntity> GetQuery()
         {
-            using (var context = new TContext())
-            {
-                return context.Set<TEntity>().AsQueryable().AsNoTracking();
-            }
+            return _context.Set<TEntity>().AsQueryable().AsNoTracking();
+        }
+        public async Task<int> GetTotalCount()
+        {
+            return await _context.Set<TEntity>().AsQueryable().AsNoTracking().CountAsync();
         }
     }
 }

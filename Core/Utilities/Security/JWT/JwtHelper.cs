@@ -20,7 +20,7 @@ namespace Core.Utilities.Security.JWT
         public JwtHelper(IConfiguration configuration)
         {
             Configuration = configuration;
-            _tokenOptions = JsonConvert.DeserializeObject<TokenOptions>(Configuration.GetSection("TokenOptions").Value);
+            _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
 
         public IConfiguration Configuration { get; }

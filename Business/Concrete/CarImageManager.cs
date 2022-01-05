@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Aspects.Autofac.Caching;
+using Core.Entities.Concrete;
 using Core.Utilities.Business;
 using Core.Utilities.FileUploads;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Filters;
 using Microsoft.AspNetCore.Http;
 
 namespace Business.Concrete
@@ -30,12 +30,9 @@ namespace Business.Concrete
         {
             var result = await _carImageDal.GetAsync(c => c.Id == id);
 
-            IfCarImageOfCarNotExistsAddDefault(ref result);
-
             return new SuccessDataResult<CarImage>(result);
         }
-
-        [SecuredOperation("carimage.getall,moderator,admin")]
+        [CacheAspect]
         public async Task<IDataResult<List<CarImage>>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(await _carImageDal.GetAllAsync());
@@ -47,12 +44,7 @@ namespace Business.Concrete
             var result = await _carImageDal.GetAllAsync(c => c.CarId == carId);
 
             if (result.Count <= 0)
-                result.Add(new CarImage
-                {
-                    ImagePath =
-                        $@"{Environment.CurrentDirectory}\Public\Images\CarImage\default-img.png",
-                    Date = DateTime.UtcNow
-                });
+                result.Add(CreateDefaultCarImage());
 
             return new SuccessDataResult<List<CarImage>>(result);
         }
@@ -95,16 +87,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarImageDeleted);
         }
 
-        private void IfCarImageOfCarNotExistsAddDefault(ref List<CarImage> result)
-        {
-            if (!result.Any()) result.Add(CreateDefaultCarImage());
-        }
-
-        private void IfCarImageOfCarNotExistsAddDefault(ref CarImage result)
-        {
-            if (result == null) result = CreateDefaultCarImage();
-        }
-
         private CarImage CreateDefaultCarImage()
         {
             var defaultCarImage = new CarImage
@@ -115,15 +97,6 @@ namespace Business.Concrete
             };
 
             return defaultCarImage;
-        }
-
-        private string CreateNewPath(IFormFile file)
-        {
-            var fileInfo = new FileInfo(file.FileName);
-            var newPath =
-                $@"{Environment.CurrentDirectory}\Public\Images\CarImage\Upload\{Guid.NewGuid()}_{DateTime.Now.Month}_{DateTime.Now.Day}_{DateTime.Now.Year}{fileInfo.Extension}";
-
-            return newPath;
         }
 
         private async Task<IResult> CheckCarImagesCount(string carId)
