@@ -132,9 +132,11 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserOperationClaims");
                 });
@@ -206,9 +208,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("KmCurrent")
@@ -292,9 +291,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId")
-                        .IsUnique()
-                        .HasFilter("[CarId] IS NOT NULL");
+                    b.HasIndex("CarId");
 
                     b.ToTable("CarImages");
                 });
@@ -647,6 +644,15 @@ namespace DataAccess.Migrations
                     b.ToTable("RentalEstimates");
                 });
 
+            modelBuilder.Entity("Core.Entities.Concrete.UserOperationClaim", b =>
+                {
+                    b.HasOne("Core.Entities.Concrete.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Car", b =>
                 {
                     b.HasOne("Entities.Concrete.Brand", "Brand")
@@ -671,8 +677,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.CarImage", b =>
                 {
                     b.HasOne("Entities.Concrete.Car", "Car")
-                        .WithOne("CarImage")
-                        .HasForeignKey("Entities.Concrete.CarImage", "CarId");
+                        .WithMany("Images")
+                        .HasForeignKey("CarId");
 
                     b.Navigation("Car");
                 });
@@ -742,7 +748,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.Car", b =>
                 {
-                    b.Navigation("CarImage");
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Company", b =>

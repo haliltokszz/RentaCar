@@ -21,7 +21,15 @@ namespace Business.Concrete
         [SecuredOperation("customer.get,moderator,admin")]
         public async Task<IDataResult<Customer>> Get(string id)
         {
-            return new SuccessDataResult<Customer>(await _customerDal.GetAsync(c => c.Id == id));
+            return new SuccessDataResult<Customer>(await _customerDal.GetAsync(c => c.Id == id, c => c.Company,
+                c => c.User));
+        }
+
+        [SecuredOperation("customer.get,moderator,admin")]
+        public async Task<IDataResult<Customer>> GetCustomerByUser(string userId)
+        {
+            return new SuccessDataResult<Customer>(await _customerDal.GetAsync(c => c.UserId == userId, c => c.User,
+                c => c.Company));
         }
 
         [SecuredOperation("customer.get,moderator,admin")]

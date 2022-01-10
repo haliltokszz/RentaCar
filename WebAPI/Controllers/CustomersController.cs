@@ -24,6 +24,14 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        [HttpGet("getcustomerbyuser/{id}")]
+        public async Task<IActionResult> GetCustomerByUser(string userId)
+        {
+            var result = await _customerService.GetCustomerByUser(userId);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

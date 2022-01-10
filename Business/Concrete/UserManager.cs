@@ -27,10 +27,17 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
-        [SecuredOperation("user.get,moderator,admin")]
+        [SecuredOperation("user,user.get,moderator,admin")]
         public async Task<IDataResult<UserDetailDto>> Get(string id)
         {
             var userDto = _mapper.Map<UserDetailDto>(await _userDal.GetAsync(u => u.Id == id));
+            return new SuccessDataResult<UserDetailDto>(userDto);
+        }
+        
+        [SecuredOperation("user,user.get,moderator,admin")]
+        public async Task<IDataResult<UserDetailDto>> GetUserDetailByMail(string mail)
+        {
+            var userDto = _mapper.Map<UserDetailDto>(await _userDal.GetAsync(u => u.Email == mail));
             return new SuccessDataResult<UserDetailDto>(userDto);
         }
 
@@ -44,7 +51,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(await _userDal.GetAsync(u => u.Email == email));
         }
 
-        [SecuredOperation("user.get,moderator,admin")]
+        [SecuredOperation("user,user.get,moderator,admin")]
         public async Task<IDataResult<List<UserDetailDto>>> GetAll()
         {
             var userDto = _mapper.Map<List<UserDetailDto>>(await _userDal.GetAllAsync());
@@ -61,15 +68,21 @@ namespace Business.Concrete
         public async Task<IResult> Register(User user)
         {
             await _userDal.AddAsync(user);
-            var defaultOperationClaim = await _operationClaimDal.GetAsync(o => o.Name == "User");
-            if (defaultOperationClaim is not null)
+            var defaultOperationClaim = await _operationClaimDal.GetAsync(o => o.Name == "user");
+            if (defaultOperationClaim is null)
             {
-                await _userOperationClaimDal.AddAsync(new UserOperationClaim
+                defaultOperationClaim = new OperationClaim
                 {
-                    UserId = user.Id,
-                    OperationClaimId = defaultOperationClaim.Id
-                });
+                    Name = "user"
+                };
+                await _operationClaimDal.AddAsync(defaultOperationClaim);
             }
+
+            await _userOperationClaimDal.AddAsync(new UserOperationClaim
+            {
+                UserId = user.Id,
+                OperationClaimId = defaultOperationClaim.Id
+            });
             return new SuccessResult(Messages.UserCreated);
         }
 

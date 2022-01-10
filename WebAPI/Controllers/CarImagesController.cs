@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete]
+        [HttpPost("delete")]
         public async Task<IActionResult> Delete(CarImage carImage)
         {
             var result = await _carImageService.Delete(carImage);

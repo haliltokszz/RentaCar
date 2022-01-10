@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromBody] CarFilter filter)
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] CarFilter filter = null)
         {
             var result = await _carService.GetAll(pageFilter, filter);
             if (result.Success) return Ok(result);

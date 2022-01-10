@@ -1,4 +1,6 @@
-﻿using Core.Entities.Abstract;
+﻿using System.Collections.Generic;
+using Castle.Components.DictionaryAdapter;
+using Core.Entities.Abstract;
 
 namespace Entities.Concrete
 {
@@ -21,13 +23,12 @@ namespace Entities.Concrete
 
         //References
         public string CompanyId { get; set; }
-        public Company Company { get; set; }
+        public virtual Company Company { get; set; }
         public string BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public virtual Brand Brand { get; set; }
         public string ColorId { get; set; }
-        public Color Color { get; set; }
+        public virtual  Color Color { get; set; }
 
-        public string ImageId { get; set; }
-        public CarImage CarImage { get; set; }
+        public virtual  List<CarImage> Images { get; set; } = new EditableList<CarImage>();
     }
 }

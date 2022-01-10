@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,19 @@ namespace WebAPI.Controllers
                 return Ok(result);
 
             return BadRequest(result);
+        }
+        
+        [HttpGet("isauthenticated")]
+        public async Task<ActionResult> IsAuthenticated(string userMail, string requiredRoles)
+        {
+            var requiredRolesList = !string.IsNullOrEmpty(requiredRoles)
+                ? requiredRoles.Split(',').ToList()
+                : null;
+
+            var result = await _authService.IsAuthenticated(userMail, requiredRolesList);
+            if (result.Success) return Ok(result);
+
+            return Unauthorized(result.Message);
         }
     }
 }

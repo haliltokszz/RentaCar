@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete]
+        [HttpPost("/delete")]
         public async Task<IActionResult> Delete(Color color)
         {
             var result = await _colorService.Delete(color);

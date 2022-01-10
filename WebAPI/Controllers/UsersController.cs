@@ -33,6 +33,14 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        [HttpGet("getuserdetailbymail")]
+        public async Task<IActionResult> GetByMail(string userMail)
+        {
+            var result = await _userService.GetUserDetailByMail(userMail);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Add(UserDetailDto user)

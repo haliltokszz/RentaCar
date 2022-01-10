@@ -37,8 +37,8 @@ namespace Core.DataAccess.EntityFramework
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
                 addedEntity.Entity.CreatedTime = DateTime.UtcNow;
-                // addedEntity.Entity.CreatedBy =
-                //     _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                addedEntity.Entity.CreatedBy =
+                     _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 await context.SaveChangesAsync(); //remove for UoW
                 return entity;
             }
@@ -77,7 +77,11 @@ namespace Core.DataAccess.EntityFramework
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var query = GetQuery().Where(filter);
-            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
+            if (includeProperties != null)
+            {
+                query = includeProperties.Aggregate(query, 
+                    (current, include) => current.Include(include));
+            }
 
             return await query.SingleOrDefaultAsync();
         }
@@ -91,7 +95,11 @@ namespace Core.DataAccess.EntityFramework
                 query = query.Where(filter);
             }
 
-            foreach (var includeProperty in includeProperties) query = query.Include(includeProperty);
+            if (includeProperties != null)
+            {
+                query = includeProperties.Aggregate(query, 
+                    (current, include) => current.Include(include));
+            }
 
             return await query.ToListAsync();
         }
@@ -118,8 +126,8 @@ namespace Core.DataAccess.EntityFramework
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return await (filter == null
-                ? GetAllAsync(pageFilter, filter)
-                : GetAllAsync(pageFilter, Filter.DynamicFilter<TEntity, IFilter>(filter)));
+                ? GetAllAsync(pageFilter, filter, includeProperties)
+                : GetAllAsync(pageFilter, Filter.DynamicFilter<TEntity, IFilter>(filter), includeProperties));
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)

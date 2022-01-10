@@ -28,17 +28,16 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(await _carDal.GetAllAsync(c => c.Available));
         }
 
-        [CacheAspect]
         public async Task<IDataResult<Car>> Get(string id)
         {
-            return new SuccessDataResult<Car>(await _carDal.GetAsync(c => c.Id == id));
+            return new SuccessDataResult<Car>(await _carDal.GetAsync(c => c.Id == id, c => c.Brand, c => c.Color,
+                c => c.Images));
         }
 
-        [CacheAspect]
-        public async Task<IDataResult<List<Car>>> GetAll(PageFilter pageFilter, CarFilter filter)
+        public async Task<IDataResult<List<Car>>> GetAll(PageFilter pageFilter, CarFilter filter = null)
         {
             return new SuccessPagedDataResult<List<Car>>(await _carDal.GetAllAsync(pageFilter, filter, c => c.Brand,
-                c => c.Color, c => c.Company, c => c.CarImage));
+                c => c.Color, c => c.Company, c => c.Images));
         }
 
         [SecuredOperation("car.add,moderator,admin")]

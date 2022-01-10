@@ -16,5 +16,6 @@ namespace Business.Abstract
         Task<IResult> Delete(UserDetailDto user);
         IDataResult<List<OperationClaim>> GetClaims(User user);
         Task<IDataResult<User>> GetByMail(string userMail);
+        Task<IDataResult<UserDetailDto>> GetUserDetailByMail(string userMail);
     }
 }

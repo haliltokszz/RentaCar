@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         public async Task<IDataResult<List<Brand>>> GetAll(BrandAndColorFilter filter = null)
         {
-            if(filter==null) return new SuccessDataResult<List<Brand>>(await _brandDal.GetAllAsync());
+            if(filter == null || filter.Name==null) return new SuccessDataResult<List<Brand>>(await _brandDal.GetAllAsync());
             
             var exp = Filter.DynamicFilter<Brand, BrandAndColorFilter>(filter);
             return new SuccessDataResult<List<Brand>>(await _brandDal.GetAllAsync(exp));

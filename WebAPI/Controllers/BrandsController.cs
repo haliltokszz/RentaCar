@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] BrandAndColorFilter filter= null)
+        public async Task<IActionResult> GetAll([FromQuery] BrandAndColorFilter filter= null)
         {
             var result = await _brandService.GetAll(filter);
             if (result.Success) return Ok(result);
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete]
+        [HttpPost("/delete")]
         public async Task<IActionResult> Delete(Brand brand)
         {
             var result = await _brandService.Delete(brand);

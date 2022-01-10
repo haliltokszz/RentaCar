@@ -8,6 +8,7 @@ namespace Business.Abstract
     public interface ICustomerService
     {
         Task<IDataResult<Customer>> Get(string id);
+        Task<IDataResult<Customer>> GetCustomerByUser(string userId);
 
         Task<IDataResult<List<Customer>>> GetAll();
 

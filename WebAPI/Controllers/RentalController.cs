@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromBody] RentalFilter filter)
+        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] RentalFilter filter)
         {
             var result = await _rentalService.GetAll(pageFilter, filter);
             if (result.Success) return Ok(result);
