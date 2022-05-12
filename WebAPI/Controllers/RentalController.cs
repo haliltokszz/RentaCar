@@ -37,6 +37,15 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+        
+        [HttpGet("getcarsbyavailable")]
+        public async Task<IActionResult> GetCarsByAvailable([FromQuery] RentalFilter filter)
+        {
+            var result = await _rentalService.GetCarsByAvailable(filter);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
 
         [HttpGet("getbynoapprove")]
         public async Task<IActionResult> GetByNoApprove()

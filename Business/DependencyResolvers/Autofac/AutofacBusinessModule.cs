@@ -17,8 +17,8 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
-            builder.RegisterType<UnitofWork>().As<IUnitofWork>().SingleInstance();
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
+            builder.RegisterType<UnitofWork>().As<IUnitofWork>().InstancePerLifetimeScope();
 
             builder.RegisterType<BrandManager>().As<IBrandService>().InstancePerLifetimeScope();
             builder.RegisterType<EfBrandDal>().As<IBrandDal>().InstancePerLifetimeScope();
@@ -54,11 +54,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
-            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
-            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().InstancePerLifetimeScope();
 
             var assembly = Assembly.GetExecutingAssembly();
 

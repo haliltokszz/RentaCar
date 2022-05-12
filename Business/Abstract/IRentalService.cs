@@ -12,6 +12,7 @@ namespace Business.Abstract
         Task<IDataResult<List<Rental>>> GetByNoApprove();
         Task<IDataResult<Rental>> Get(string id);
         Task<IDataResult<List<Rental>>> GetAll(PageFilter pageFilter, RentalFilter filter = null);
+        Task<IDataResult<List<Car>>> GetCarsByAvailable(RentalFilter filter);
         Task<IResult> Add(Rental rental);
         Task<IResult> Delivered(Rental rental);
         Task<IResult> Approve(Rental rental);

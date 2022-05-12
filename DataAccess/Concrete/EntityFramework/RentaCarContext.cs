@@ -2,7 +2,6 @@
 using Core.Extensions;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -22,12 +21,14 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<RentalCount> RentalCounts { get; set; }
         public DbSet<RentalEstimate> RentalEstimates { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(
-                    "Server=MONSTER-HALIL\\SQLEXPRESS; Database=RentaCar; Trusted_Connection=True; MultipleActiveResultSets=true");
+                    "Server=MONSTER-HALIL\\SQLEXPRESS; Database=RentaCar; Trusted_Connection=True; MultipleActiveResultSets=true",
+                    provider => { provider.EnableRetryOnFailure(); });
                 // IConfigurationRoot configuration = new ConfigurationBuilder()
                 //     .SetBasePath(Directory.GetCurrentDirectory())
                 //     .AddJsonFile("appsettings.json")

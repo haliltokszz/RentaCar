@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Core.Aspects.Autofac.Caching.CacheAspect">
+    <Position X="1.5" Y="14" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Aspects.Autofac.Caching.CacheRemoveAspect">
+    <Position X="3.75" Y="14" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Aspects.Autofac.Performance.PerformanceAspect">
+    <Position X="6.25" Y="14" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Aspects.Autofac.Transaction.TransactionScopeAspect">
+    <Position X="8.75" Y="14" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Aspects.Autofac.Validation.ValidationAspect">
+    <Position X="11.5" Y="14" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Constants.CoreAspectMessages" Collapsed="true">
+    <Position X="46" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Constants.CoreMessages" Collapsed="true">
+    <Position X="37.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.CrossCuttingConcerns.Caching.Microsoft.MemoryCacheManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="42.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.CrossCuttingConcerns.Caching.Redis.RedisCacheManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.CrossCuttingConcerns.Validation.FluentValidation.ValidationTool" Collapsed="true">
+    <Position X="40.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.DataAccess.EntityFramework.EfEntityRepositoryBase&lt;TEntity, TContext&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.DependencyResolvers.CoreModule" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.Entities.Abstract.AuditableEntity">
+    <Position X="18.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Core.Entities.Concrete.OperationClaim">
+    <Position X="2.5" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Entities.Concrete.PageFilter" Collapsed="true">
+    <Position X="37.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Entities.Concrete.User">
+    <Position X="7" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Entities.Concrete.UserClaim" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="39" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.Entities.Concrete.UserOperationClaim">
+    <Position X="9.25" Y="4" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ClaimExtensions" Collapsed="true">
+    <Position X="42.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ClaimsPrincipalExtensions" Collapsed="true">
+    <Position X="44.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ErrorDetails">
+    <Position X="10" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ValidationErrorDetails">
+    <Position X="10" Y="9.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ExceptionMiddleware" Collapsed="true">
+    <Position X="42.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ExceptionMiddlewareExtensions" Collapsed="true">
+    <Position X="44.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ModelBuilderExtensions" Collapsed="true">
+    <Position X="44.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.OrderExtension" Collapsed="true">
+    <Position X="46" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Extensions.ServiceCollectionExtensions" Collapsed="true">
+    <Position X="42.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Business.BusinessRules" Collapsed="true">
+    <Position X="40.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.FileUploads.FileUpload" Collapsed="true">
+    <Position X="46" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Filter.Filter" Collapsed="true">
+    <Position X="37.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Interceptors.AspectInterceptorSelector" Collapsed="true">
+    <Position X="39" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Interceptors.MethodInterception">
+    <Position X="6.25" Y="11" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Interceptors.MethodInterceptionBaseAttribute">
+    <Position X="6" Y="8.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.IoC.ServiceTool" Collapsed="true">
+    <Position X="44.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.DataResult&lt;T&gt;">
+    <Position X="18.25" Y="12.25" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Core.Utilities.Results.ErrorDataResult&lt;T&gt;">
+    <Position X="14.5" Y="14.75" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.ErrorResult">
+    <Position X="27.75" Y="12.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.PagedDataResult&lt;T&gt;">
+    <Position X="18" Y="14.75" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.Result">
+    <Position X="21.25" Y="9.5" Width="1.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Core.Utilities.Results.SuccessDataResult&lt;T&gt;">
+    <Position X="21.5" Y="14.75" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.SuccessPagedDataResult&lt;T&gt;">
+    <Position X="17.75" Y="18" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Results.SuccessResult">
+    <Position X="24.75" Y="12.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Security.Encryption.SecurityKeyHelper" Collapsed="true">
+    <Position X="40.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Security.Encryption.SigningCredentialsHelper" Collapsed="true">
+    <Position X="46" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Security.Hashing.HashingHelper" Collapsed="true">
+    <Position X="39" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Security.JWT.AccessToken" Collapsed="true">
+    <Position X="37.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Core.Utilities.Security.JWT.JwtHelper" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="40.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Core.Utilities.Security.JWT.TokenOptions" Collapsed="true">
+    <Position X="37.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Entities.Concrete.Brand">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Concrete\Brand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Car">
+    <Position X="23" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAAACAAAAEogAAgAAAAAAARAAAAAACEIAAAExAARCBA=</HashCode>
+      <FileName>Concrete\Car.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.CarImage">
+    <Position X="30.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAICAAAAAAAABAAAEAAAAAAA=</HashCode>
+      <FileName>Concrete\CarImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Color">
+    <Position X="11.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Concrete\Color.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Company">
+    <Position X="14" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAACIAAAAAAQQAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Concrete\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.CreditCard">
+    <Position X="18.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAgAACAAAAAAAAAAAAAAAAgAABAAAAAACCAAAAA=</HashCode>
+      <FileName>Concrete\CreditCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Customer">
+    <Position X="25.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAAADAAAAAA=</HashCode>
+      <FileName>Concrete\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Findeks">
+    <Position X="32.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAgAAgAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Concrete\Findeks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Payment">
+    <Position X="34.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAEAAAAAAAAEAAAAAAAAACAAAEAA=</HashCode>
+      <FileName>Concrete\Payment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.Rental">
+    <Position X="16.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAkAAAACAUYAAAAAAAAAAACgAAIAABAAAQAgBEAAAAA=</HashCode>
+      <FileName>Concrete\Rental.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.RentalCount">
+    <Position X="20.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAACAA=</HashCode>
+      <FileName>Concrete\RentalCount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Concrete.RentalEstimate">
+    <Position X="28" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAAACAA=</HashCode>
+      <FileName>Concrete\RentalEstimate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Dtos.RentalDto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAACAUIAAAAAAAAAAACgAAIAABAAAQAgAEAAAAA=</HashCode>
+      <FileName>Dtos\RentalDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Dtos.UserDetailDto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAEAAQAQAAAAAAAACAAAAAAAAAAg=</HashCode>
+      <FileName>Dtos\UserDetailDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Dtos.UserForLoginDto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Dtos\UserForLoginDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Dtos.UserForRegisterDto" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAAAAQAQAAAAAAAACAQAAAAAAAAg=</HashCode>
+      <FileName>Dtos\UserForRegisterDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Filters.BrandAndColorFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Filters\BrandAndColorFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Filters.CarFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAEIAAAgAAAAAAARAAAAAACAIAAAEQAAQAAA=</HashCode>
+      <FileName>Filters\CarFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Entities.Filters.RentalFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAQIAAAAAAAAAAACgAAIAABAAAAAAAEAAAAA=</HashCode>
+      <FileName>Filters\RentalFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Core.CrossCuttingConcerns.Caching.ICacheManager" Collapsed="true">
+    <Position X="37.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.DataAccess.IEntityRepository&lt;T&gt;" Collapsed="true">
+    <Position X="44.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Entities.Abstract.IDto" Collapsed="true">
+    <Position X="40.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Entities.Abstract.IEntity" Collapsed="true">
+    <Position X="42.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Entities.Filters.IFilter" Collapsed="true">
+    <Position X="46" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Utilities.IoC.ICoreModule" Collapsed="true">
+    <Position X="39" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Utilities.Results.IDataResult&lt;T&gt;">
+    <Position X="1" Y="8.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Utilities.Results.IResult">
+    <Position X="1" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Core.Utilities.Security.JWT.ITokenHelper" Collapsed="true">
+    <Position X="37.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Entities.Concrete.CarCategories" Collapsed="true">
+    <Position X="37.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAABCgAAABCAAIAAACAAAAAAAA=</HashCode>
+      <FileName>Concrete\Brand.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

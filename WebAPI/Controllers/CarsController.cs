@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Business.Abstract;
 using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Filters;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +29,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PageFilter pageFilter, [FromQuery] CarFilter filter = null)
+        [HttpGet("getallwithfilter")]
+        public async Task<IActionResult> GetAllWithFilter([FromQuery] PageFilter pageFilter, [FromQuery] CarFilter filter)
         {
-            var result = await _carService.GetAll(pageFilter, filter);
+            var result = await _carService.GetAllWithFilter(pageFilter, filter);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _carService.GetAll();
             if (result.Success) return Ok(result);
 
             return BadRequest(result);

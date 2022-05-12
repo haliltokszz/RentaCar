@@ -9,7 +9,8 @@ namespace Business.Abstract
 {
     public interface ICarService
     {
-        Task<IDataResult<List<Car>>> GetAll(PageFilter pageFilter, CarFilter filter);
+        Task<IDataResult<List<Car>>> GetAll();
+        Task<IDataResult<List<Car>>> GetAllWithFilter(PageFilter pageFilter, CarFilter filter);
         Task<IDataResult<List<Car>>> GetByAvailable();
         Task<IDataResult<Car>> Get(string carId);
         Task<IResult> Add(Car car);

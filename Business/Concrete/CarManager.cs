@@ -33,16 +33,22 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(await _carDal.GetAsync(c => c.Id == id, c => c.Brand, c => c.Color,
                 c => c.Images));
         }
-
-        public async Task<IDataResult<List<Car>>> GetAll(PageFilter pageFilter, CarFilter filter = null)
+        //[CacheAspect]
+        public async Task<IDataResult<List<Car>>> GetAllWithFilter(PageFilter pageFilter, CarFilter filter = null)
         {
             return new SuccessPagedDataResult<List<Car>>(await _carDal.GetAllAsync(pageFilter, filter, c => c.Brand,
-                c => c.Color, c => c.Company, c => c.Images));
+                c => c.Color, c => c.Images));
+        }
+        [CacheAspect]
+        public async Task<IDataResult<List<Car>>> GetAll()
+        {
+            return new SuccessPagedDataResult<List<Car>>(await _carDal.GetAllAsync( null,c => c.Brand,
+                c => c.Color, c => c.Images));
         }
 
         [SecuredOperation("car.add,moderator,admin")]
         [ValidationAspect(typeof(CarValidator))]
-        [CacheRemoveAspect("ICarService.Get")]
+        //[CacheRemoveAspect("ICarService.Get")]
         public async Task<IResult> Add(Car car)
         {
             await _carDal.AddAsync(car);
@@ -52,7 +58,7 @@ namespace Business.Concrete
 
         [SecuredOperation("car.update,moderator,admin")]
         [ValidationAspect(typeof(CarValidator))]
-        [CacheRemoveAspect("ICarService.Get")]
+        //[CacheRemoveAspect("ICarService.Get")]
         public async Task<IResult> Update(Car car)
         {
             await _carDal.UpdateAsync(car);
@@ -61,7 +67,7 @@ namespace Business.Concrete
         }
 
         [SecuredOperation("car.delete,moderator,admin")]
-        [CacheRemoveAspect("ICarService.Get")]
+        //[CacheRemoveAspect("ICarService.Get")]
         public async Task<IResult> Delete(Car car)
         {
             await _carDal.DeleteAsync(car);

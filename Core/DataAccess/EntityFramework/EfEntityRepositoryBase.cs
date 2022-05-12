@@ -38,7 +38,7 @@ namespace Core.DataAccess.EntityFramework
                 addedEntity.State = EntityState.Added;
                 addedEntity.Entity.CreatedTime = DateTime.UtcNow;
                 addedEntity.Entity.CreatedBy =
-                     _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 await context.SaveChangesAsync(); //remove for UoW
                 return entity;
             }
@@ -79,13 +79,13 @@ namespace Core.DataAccess.EntityFramework
             var query = GetQuery().Where(filter);
             if (includeProperties != null)
             {
-                query = includeProperties.Aggregate(query, 
+                query = includeProperties.Aggregate(query,
                     (current, include) => current.Include(include));
             }
 
             return await query.SingleOrDefaultAsync();
         }
-        
+
         public async Task<List<TEntity>> GetAllAsync(
             Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includeProperties)
         {
@@ -97,7 +97,7 @@ namespace Core.DataAccess.EntityFramework
 
             if (includeProperties != null)
             {
-                query = includeProperties.Aggregate(query, 
+                query = includeProperties.Aggregate(query,
                     (current, include) => current.Include(include));
             }
 
@@ -107,7 +107,6 @@ namespace Core.DataAccess.EntityFramework
         public async Task<List<TEntity>> GetAllAsync(PageFilter pageFilter,
             Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            
             var query = GetQuery();
             if (filter != null)
             {
@@ -149,6 +148,7 @@ namespace Core.DataAccess.EntityFramework
         {
             return _context.Set<TEntity>().AsQueryable().AsNoTracking();
         }
+
         public async Task<int> GetTotalCount()
         {
             return await _context.Set<TEntity>().AsQueryable().AsNoTracking().CountAsync();

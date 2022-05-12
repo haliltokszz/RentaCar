@@ -34,6 +34,14 @@ namespace Business.Concrete
             _rentalCountDal = rentalCountDal;
         }
 
+        public async Task<IDataResult<List<Car>>> GetCarsByAvailable(RentalFilter filter)
+        {
+            var rentals = await _rentalDal.GetAllAsync(r=>r.EndDate < filter.StartDate, r => r.Car);
+            if (rentals == null) return new ErrorDataResult<List<Car>>();
+            var cars = rentals.Select(r => r.Car).ToList();
+            return new SuccessDataResult<List<Car>>(cars);
+        }
+
         [SecuredOperation("user,rental.add,moderator,admin")]
         [ValidationAspect(typeof(RentalValidator))]
         public async Task<IResult> Add(Rental rental)
